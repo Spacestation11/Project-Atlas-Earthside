@@ -1,0 +1,141 @@
+PROJECT ATLAS - EARTHSIDE · CHANGELOG
+Copyright (c) 2026 Sam (GitHub: Spacestation11). All rights reserved.
+
+HOW THE NUMBERS WORK
+- "Update N" = a commit to GitHub, numbered in commit order.
+- "build vX" = Claude's internal build number. Claude made many more builds than
+  were committed, so one GitHub update contains several builds.
+- Every build is listed in part B, so nothing is lost.
+- Full detail for each build is in project-atlas-game-brief.md.
+
+======================================================================
+A. GITHUB UPDATES  ->  CLAUDE BUILDS
+======================================================================
+Update 1    = build v14          First upload. Includes everything from v1 to v14.
+Update 2    = build v21          Includes builds v15 to v21.
+Update 3    = build v30          Includes builds v22 to v30 (v22, v23, v24, v25, v26, v26.1,
+                                 v26.2, v26.3, v27, v27.1, v28, v29, v29.1, v29.2, v30).
+
+Note: builds v22 to v29.2 were delivered as files and previews but never committed.
+Earlier notes that called them "Update 3" to "Update 11" referred to planned commits;
+they are all part of GitHub Update 3. The commit message of each update names its
+build ("Update N (build vX): ...").
+
+======================================================================
+B. ALL CLAUDE BUILDS
+======================================================================
+v1-v4   Early prototypes. No detailed notes kept.
+v5      First real-time version: shelter jobs on timers, real-time side-view
+        sorties, shared night clock, fog of war, noise, radiation, weather model,
+        synthesized sound, story acts (relays, nodes, Ali).
+v6      Cutaway shelter with buildable rooms beside an elevator shaft.
+v7      Indoor shelter from weather on sorties, backpacks, worker and combat
+        androids, Follow mode, animated containers, new character art.
+v8      Per-person gear, auto-equip by hazard, inventory tabs, softer audio,
+        ash-and-dust art grade.
+v9      Responsive layout (portrait/landscape), closer sortie camera, readable
+        shelter rooms, visible gear, overgrowth.
+v10     Adjustable zoom (buttons, pinch, wheel), character close-up portraits,
+        film pass.
+v11     Endless sortie maps built as you walk, tunnel hatches home,
+        distance and time tracking.
+v12     Revive in the Med Bay, unloading on return, redrawn rooms,
+        green-screen Command terminal.
+v13     Cancel recall, androids restart on power, END DAY timer, Khan's photo.
+v14     Medicine recipe, faster crafting and actions.         -> GitHub Update 1
+v15     Name "Project Atlas - Earthside", player profiles on the device,
+        graphics levels, blood physics, GitHub Pages files.
+v16     HUD flicker fix, full character creator, player icon (drawn/photo).
+v17     Clearer inventory wording.
+v18     Levels and skills, ranks, Bob upgrades to Mk V, Max's own gear,
+        dog food and treats, fallback weapons, redrawn characters.
+v19     New sounds for revive, medicine, anti-rad and treats.
+v20     Away work while the game is closed, AWAY ORDERS, Mushroom Bay, Ada.
+v21     Double-wide Quarters, followers step aside while looting, visible
+        wounds, dismemberment.                                -> GitHub Update 2
+v22     Compact controls and job pop-up, ladders and stairs, the Shifted
+        (Flicker, Hollow, Echo, Kiln, Husk, the Choir), cure with anti-rad,
+        gore styles, destructible doors and walls, 13 building types,
+        Bronze-Platinum awards.
+v23     Labelled progress bars for field actions.
+v24     Shelter work labels, elevator, bigger rooms, Storage, nuclear plant
+        backdrop, move/dismantle bays, scrap items, reworked enemies,
+        Hunting Grounds, bow/arrows/spear, mercy, survivors join, Records,
+        Bob crafts at Mk V and is autonomous at Mk IX.
+v25     (previewed in several rounds)
+        - Hunting v2: player picks every strike, Max only drives and pins,
+          hunting weapon slot, fallback bow > spear > knife, butchering
+          animation, pelt grades, organ meat.
+        - Only some rescues join; squad choice with or without Max;
+          the Exclusion Zone.
+        - Khan: Soldier and Pilgrim paths, sayings, the departed, relics;
+          Sam's and Max's collectibles; 16 awards.
+        - Missing-materials text, BACKPACK, wounded state for Khan and Max,
+          weapon tiers with hit points, combat axe, katana, grenades,
+          Molotovs with spreading fire, clean mercy stroke, families and
+          children.
+        - Sam's ICU, new game-over rule, reishi medicine, bandages, tonics,
+          foraging, flashlight, the Undercity, navigator colours, freed-soul
+          effect, MORE menu, stairs, unique names, kitchen, birthdays with
+          zodiac and life path, capacity and rebellion, tips, Ali's
+          portrait, new score and Khan's chant, copyright notice and
+          LICENSE.md.
+v26     Day and night cycle (06:00-20:00), short shelter night, dangerous
+        night sorties, layered rain and fog, AUTO ENGAGE, protect Sam,
+        longer award pop-ups, life path Sam 6 / Khan 33, new portraits for
+        Sam, Khan, Max and Bob.
+v26.1   Portrait card moves above the job panel; Sam defaults to his photo.
+v26.2   Portrait card always sits below the lowest bay row (with a margin),
+        shrinks to fit, uses the left margin beside the bays when there is
+        no room below (landscape), and hides rather than cover a bay.
+        README with mechanics and story arc, this CHANGELOG.
+v26.3   Setting moved from 2092 to 2039 (Collapse 2031, eight years ago).
+        Calendar, birth dates (Sam 2001, Khan 1983, Max 2035), survivors'
+        ages, main menu, README, brief and story bible updated.
+v27     Character sheet: full character image with equipment slots
+        (equip / unequip by tapping), stats card; portrait card sits low
+        and moves above open panels without entering the bay area.
+v27.1   Fix: sorties froze at nightfall (all maps); clean end when the
+        last squad member falls to weather; smoother portrait card.
+v28     Timeline: Collapse 14 March 2033, game starts 10 April 2042.
+        Birth dates: Sam 2004, Khan 21 June 1986 (life path 33), Max 2038.
+        Stopped helpers on every map (salvage, last logs), flickering
+        helpers, Shield can to wake a helper, Rebuilt helper for a
+        dormitory, Bob's origin, two awards.
+v29     Fixes: squad no longer loops on "cannot reach" at a bricked-up
+        doorway (Sam or Khan break through, or the target is dropped for
+        10 s); Bob's panel says he is offline because there is no power.
+        Field kit on sorties (heal, anti-rad, craft bandage / medicine /
+        anti-rad, equip trinkets; weapons and suits only in the shelter).
+        Locked strongboxes tiers I-III, Lockpicking skill for Sam and
+        Khan, 16 unique items in two special slots, suit upgrades 0-3.
+        A death sound for every enemy and animal type.
+        AUTO ENGAGE off = nobody attacks unless ordered or the enemy is
+        within arm's reach; squad keeps close to the selected character.
+        Multi-kills (grenade, fire, rifle pass-through) with call-out,
+        headshots with slow motion, kill counters by weapon and by
+        character, Kill board and leaderboard, awards.
+        Solar arrays and wind turbines on surface pads (4 + 4, one per
+        shelter floor, efficiency I-III), battery cells, inverter, night
+        wind, seasons and rain on solar yield.
+        Shelter conditions: hunger, thirst, dark, cold and anxiety as one
+        chain with a guide; PROBLEMS chip; morning report says who is
+        affected and how much energy they wake with.
+v29.1   Med Bay: choose Heal wounds or Cure radiation sickness; it runs
+        by itself until done, no medicine or anti-rad needed.
+        Workbench: order 1 (default), a batch of up to 99, or LOOP until
+        a material runs out. Khan crafts only weapons, ammunition,
+        armour, bandages and cloth.
+v29.2   Fix: a character dragged onto a room with no job (Storage,
+        Dormitory, Kitchen) got an empty task and the shelter stopped
+        drawing. Such a drop now sends the character back in a short
+        arc to where they were, with their job unchanged. Saves with an
+        empty task are repaired.
+v30     Battery Bay: battery cells and the inverter are crafted as items
+        and installed there. 24 V pack (everyday bus) and 48 V pack
+        (smelter). Live voltage, load current, load power, cell health,
+        capacity in power and Ah. Cells age and can fail; a self-test
+        runs every morning and on demand. Smelter 50% faster on 48 V.
+        Lost sortie: if the whole squad falls, they are carried home
+        into a 3-day coma (2 with Intensive Care) and wake in the
+        Isolation Room. Two new Med Bay extension bays.       -> GitHub Update 3

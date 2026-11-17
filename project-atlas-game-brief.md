@@ -2,7 +2,7 @@
 ### `project-atlas-game-brief.md` // Design reference for `project-atlas-shelter-game.html`
 
 ## 1. Pitch
-A phone-first survival-management game in the Project Atlas: Earthside world (2092), in the spirit of *This War of Mine* and *Dying Light*. By day you run an underground shelter. Outside, a real-time sortie takes the squad into radioactive, stormy ruins. The long arc: place relays, restore three data-center nodes, wake the AI, and find Ali, Sam's wife, who has spent a year in the Meridian Treatment Center looking for a cure.
+A phone-first survival-management game in the Project Atlas - Earthside world (2042, nine years after the Harmonic Collapse of 2033), in the spirit of *This War of Mine* and *Dying Light*. By day you run an underground shelter. Outside, a real-time sortie takes the squad into radioactive, stormy ruins. The long arc: place relays, restore three data-center nodes, wake the AI, and find Ali, Sam's wife, who has spent a year in the Meridian Treatment Center looking for a cure.
 
 ## 2. Squad
 | Unit | Role | Kit | Special |
@@ -159,10 +159,214 @@ One HTML file, Canvas 2D, no assets, no network. Progress saves in localStorage.
   - Planting costs water plus scrap or parts. Each species card shows its kitchen and medicinal uses. Ripe beds spoil after their keep time. A character on the Mushrooms job picks and replants while you play; Bob at Mk V and Ada also do it while you are away.
 - Ada (the shelter mind, built in the Core Vault): unlocks after restoring all 3 data nodes or when Sam reaches level 8. Five stages, each needing materials then hours of work (Core Cradle, Tube Logic Racks, Core Memory, Nervous System, Awakening). Work continues while away. Once awake, Ada runs empty farm, water and power rooms at half speed, picks and replants mushrooms, and extends away work to 24 hours.
 
-## v21 update (beta)
+## GitHub Update 2 (build v21, beta)
+Includes builds v15 to v21. GitHub Update 1 was build v14.
+
+### v21 changes
 - Quarters is now double-wide (2 modules: bunks + table/lockers); old saves migrate automatically, moving a neighbouring room if needed.
 - Sortie looting: followers never stand on, or in the path of, a crate/item being collected; they step aside.
 - Containers: SEARCH tag only on never-opened boxes; partly emptied boxes show "OPENED / N ITEMS LEFT".
 - Visible damage: bullet holes, cuts and blood scale with lost HP on Sam, Khan, Max and enemies.
 - Healing removes wounds proportionally; med packs, Med Bay healing and revives show a bandage for a while.
 - Gore: heavy hits can sever limbs; lethal shotgun/rifle hits can dismember (head, arm, leg, chunks) with physics gibs and blood trails.
+
+
+## Versioning
+GitHub updates are numbered in commit order. The internal (Claude) build number is shown in brackets. **Update 1 = build v14. Update 2 = builds v15 to v21. Update 3 = builds v22 to v30.** Builds v22 to v29.2 were delivered as files and previews but never committed; each has its own section below, and all of them belong to the third GitHub update. Lines below that say "Menu shows BETA · UPDATE n" record what that build showed at the time; the committed game shows "BETA · UPDATE 3" (service worker cache v22).
+
+## Build v22 (beta) · part of GitHub Update 3
+- Controls: compact survivor chips and one bottom row (End Day, Sortie). Jobs pop up over the scene when a survivor is tapped and close after a pick, a tap elsewhere, or 9 s. Sortie: compact unit chips, action row, and Follow / Pack / Recall; the backpack opens as a pop-up. Controls stay along the bottom in portrait and landscape.
+- Climbing: ladders are climbed (back view, hands and feet on the rungs), clearly different from walking. Max cannot use ladders, only stairs. Shelter has a ladder shaft (left) and a stairwell (right). Sortie buildings with upper floors always have stairs, most also a ladder. Hounds, Kilns, Husks and the Choir use stairs only.
+- Containers: SEARCH shows only on unopened containers; partly emptied ones say OPENED / N ITEMS LEFT. Loot fills the searcher and anyone right beside them; if items remain, the next teammate with room walks over and takes the rest.
+- Weather, cold, fog, radiation, dawn and lightning no longer interrupt searching or work; only enemy hits do.
+- Enemies, the Shifted: people whose nervous system locked onto the frequency shift after heavy radiation.
+  - Flicker (early stage): fast, erratic, freezes and mutters. Can collapse instead of dying; while collapsed (15 s) Sam can cure them with one anti-rad and the null pulse. The cured person walks home; +1 intel, +25 XP.
+  - Hollow: hides motionless and ambushes within 3 tiles. Max, Sam's Scan, or getting close reveals it.
+  - Echo: blind, crystal crust over the eyes, hunts by sound (hearing x2.2), clicks to echolocate. Sneaking passes it.
+  - Kiln: bloated, glowing, armoured; lobs radioactive slag that leaves hot spots; bursts on death (damage, radiation, breaks nearby doors and walls).
+  - Husk: years gone, rotten and slow; loses limbs easily, crawls without legs, gives off radioactive dust when hit.
+  - The Choir (boss): a fused mass of many Shifted; static scream (damage + radiation) in a radius; tears new Flickers/Husks loose at 75/50/25% health; Sam's Scan nulls it for 3 s. Appears once a night deep out.
+  - Scavengers (raiders, gunmen, brutes) and irradiated hounds remain.
+- Gore: each kill rolls a style by weapon and overkill: clean, one limb, several limbs popping one after another, head off, head burst, everything off, or a full explosion that throws parts and blood everywhere. Heavy non-lethal hits can take a limb.
+- Blood: big drops arc and splat with spatter, fine spray hangs in the air, pools spread under bodies, wall runs and ceiling drips grow, and stains darken over time.
+- Destruction: doors open when walked through; tap a door to kick it in. Brick partitions on upper floors can be broken through (Khan 1.4 s, others 2.6 s, not Max). Bricks and planks fly and come to rest as rubble.
+- Maps: 13 building types (apartment, shop, warehouse, factory, clinic, office, station, lab, chapel, cabin, bunker, weather station, pump house) dealt without repeats, each with its own back wall, roof (parapet, saw-tooth, chimney, antenna, clock, dish, gable, sandbags, dome, water tank), old signs, furniture, windows and hanging lamps. Large landmarks per stretch (locomotive, tram, bus, ambulance, crashed helicopter, tank, pylons, crane, water tower, dish, ski lift, shrine).
+- Awards (Bronze, Silver, Gold, Platinum): 28 awards plus the platinum "Earthside" for earning all of them. A pop-up shows each one. AWARDS in the Command terminal lists them with points. Points raise the Survivor Tier: II = +1 backpack slot, III = +10% XP, IV = another backpack slot. Explosion awards: Pink Mist (1), Splatter Artist (10), Meat Rain (50).
+- Menu shows "BETA · UPDATE 3". Service worker cache v7.
+
+## Build v23 (beta) · part of GitHub Update 3
+- Timed field actions now show a small labelled bar above the character: what they are doing, a progress bar and the seconds left. Shown only for actions of 0.6 s or longer where it helps:
+  - searching: Prying open the crate, Searching the cabinet, Opening the locker, Cracking the vault, Pulling parts from the rack, Opening the med case, Checking the body, Taking what's left;
+  - objectives: Setting the relay, Restoring the data node, Reading the archive, Helping her up;
+  - items: Applying medicine, Injecting anti-rad, Eating a treat;
+  - Null pulse · restoring mind, Breaking through the wall, Breaking free!
+- Quick actions (door kick, shots, moves) keep no label. Labels from several characters stack instead of overlapping, and they stay on screen. The selected character's label is drawn on top and slightly larger.
+- The status line at the bottom uses the same wording ("Opening the locker 35% · attacks interrupt").
+- Unit chips only flag urgent states now (DOWN, HELD, FIGHT, WATCH), since the action shows above the character.
+- Menu shows "BETA · UPDATE 4". Service worker cache v8.
+
+## Build v24 (beta) · part of GitHub Update 3
+- **Work labels in the shelter:** every timed job (crafting, growing, filtering, building) shows what it is doing, a bar and time left at the room where it happens.
+- **Elevator:** a lift shaft next to the ladder. Humans and robots take the lift when it is nearer than the stairs; Max uses it only when he is close and it is free, otherwise he takes the stairs.
+- **Bigger rooms, smaller people:** characters scaled to about 80%, the shelter is wider, rooms feel like real rooms.
+- **Storage room:** the main access point for shelter stock and each character's kit (tap it to open the inventory).
+- **Backdrop:** an inactive nuclear plant behind the city blocks (reactor block, banded vent stack, confinement arch, unfinished cooling tower, ferris wheel), original art inspired by the real exclusion zone.
+- **Bays:** building shows scaffold, sparks and a short bar. Long-press a bay to drag it to an empty slot. DISMANTLE any bay (not the airlock) for about 60% of its materials back. Items can be scrapped in the inventory for raw materials.
+- **Enemies reworked:** the Shifted (radiation-sick humans, now all clearly human), rabid dogs, mutant roaches (weakest, come in swarms), and occasional thugs, thieves (steal and run), bandits, cannibals and hunters. No animal-headed humans.
+- **Hunting:** a new Hunting Grounds map full of deer, boar and hare; animals also graze in quiet gaps between buildings. They flee, tire and get cornered; a cornered or hurt boar charges. Carcasses give food and hide.
+- **Bow, arrows and spear:** crafted at the Workbench for Sam and Khan (arrows +6 per craft, some recovered after hits). Leather armour from hide. Max hunts alone if nobody has hunting gear, otherwise he runs prey down and pins it for the others.
+- **Show mercy:** with no anti-rad left, tapping a collapsed Flicker offers SHOW MERCY or LEAVE THEM.
+- **Survivors:** people you cure come home with you. Welcome them or let them go. They wait in the common area until you build a Dormitory, recover for one day, then work bays and craft like crew.
+- **Bob:** Mk V can craft; Mk IX is fully autonomous.
+- **Records:** Terminal → RECORDS shows people saved, joined, released, mercy, kills by type, gore kills, hunting and a log.
+- **New awards:** first recruit, first hunt, roach squish, five recruits, twenty hunts, gore chain, mercy, 25 saved. Gore kills give a bonus.
+
+## Build v25 (beta) · part of GitHub Update 3
+- **Hunting v2:** nobody attacks game on their own. Tap an animal and the selected hunter strikes once with the hunting weapon; you pick the moment. Tired, cornered or pinned game takes harder hits.
+- **Max** never bites game. He drives it, runs it tired and pins it for the hunters. He only fights an animal that turns on the squad (a boar).
+- **Hunting slot:** bow, spear and knife have their own slot, shown in each hunter's inventory page, the gear locker and the sortie planner. Crafted gear lands there automatically. Bow is first choice by default; tap another in the inventory, or use the hunting button next to the gun button outside. Fallback: bow → spear → knife.
+- **Visible gear:** bow and quiver or spear are carried on the back outside, and drawn in the hands when used.
+- **Clearing the way:** if a hostile stands between a hunter and the animal (or comes at them), the hunter switches to the gun, kills it, then goes back to the hunt.
+- **Butchering:** every carcass is skinned, butchered and gutted on the spot, with a kneeling animation (hide peeled and laid out, meat stacked, heart and liver set aside). Yields: meat, pelt (prime/good/poor) and organ meat.
+- **Organ meat:** a slow, continuous heal (about 1 HP/s for 45 s outside; eaten automatically in the shelter by anyone under 80 HP).
+- **Rescues:** only some cured people ask to join; others thank you, leave a gift and go their own way.
+- **Squad choice:** any mix of Sam, Khan and Max. Max never goes out alone.
+- **Exclusion Zone:** a new sortie map at the dead plant (opens after 4 sorties): high radiation, Kilns, reactor control log, more relics.
+- **Khan:** two paths (Soldier: valor from kills; Pilgrim: faith from mercy, rescue, icons and the departed), 8 perks. He sees and speaks with the departed, and shares short sayings: scripture, the Stoics, the Desert Fathers and his own.
+- **Relics:** 10 icons and holy objects for Khan, 8 instruments and books for Sam, 6 keepsakes for Max, each with a real bonus. Terminal → RELICS & KHAN'S PATHS.
+- **16 new awards** for Khan, Sam, Max, hunting and the Zone.
+- **Missing materials:** every build, upgrade and craft screen now says exactly what is missing ("Missing: 2 scrap, 1 parts").
+- **Backpack:** the sortie button reads BACKPACK.
+- **Wounded, not lost:** Khan and Max go down wounded with a 75 s bleed-out timer. A squad mate bandages them back up (automatic, or tap them); with medicine they return at 45 HP. Recalled while wounded, they come home alive. Khan no longer dies on recon; he comes back badly hurt.
+- **Weapon tiers (hit points per strike):** I knife 4–6, bite 3–4 · II pistol 5–7, bow 5–8, spear 6–9 · III rifle 8–11, combat axe 8–11 · IV shotgun 10–14 close, katana 13–17 · V grenade 22–46, Molotov 6 per 0.5 s. Shown on the weapon button and in each inventory page.
+- **Combat axe and katana:** crafted at the Workbench (katana needs level 2). They replace the knife automatically and are drawn on the body.
+- **Grenades and Molotovs:** crafted, up to 4 of each taken out. Throw button, range 7. Grenade: 2.5 tile blast, gore, breaks doors, walls and cover. Molotov: fire spreads up to 3 tiles and burns about 6 s, burning enemies keep burning.
+- **Mercy:** a single clean blade stroke.
+- **Families:** a woman and a man sharing a dormitory may become a couple and, with food to spare, have up to two children. MOVE lets you choose who shares a room.
+- **5 more awards.**
+- **Sam's ICU:** if Sam falls on a sortie and someone is left to carry him (or Bob is fully autonomous), he is resuscitated at once when there is medicine, otherwise he spends one day in intensive care.
+- **Game over rule:** the game ends only when Sam, Khan and Max are all gone, and Bob is not yet Mk IX. An autonomous Bob carries the fallen to the Med Bay; they wake the next day.
+- **Field medicine:** medicine is now made from reishi (2 reishi + 1 water). Bandages are made from cloth (lockers, cabinets, bodies, or cut from hide). Khan can craft too.
+- **Foraging:** mushroom patches on every map: reishi (medicine), lion's mane (Focus tonic, +10% to hit), cordyceps (Vigor tonic, +15% damage), chaga (Ironbark brew, 15% less damage). Tonics are drunk at the door and last one sortie.
+- **Flashlight:** crafted; switches on by itself in the dark (+2 tiles of sight, visible beam).
+- **The Undercity:** a new dark, close-combat map with an army depot (opens after 2 sorties). The Exclusion Zone opens after 4.
+- **Navigator:** finer, denser path dots. Green = move, blue = work (search, gather), orange = attack, red = kill or hunt.
+- **The freed soul:** a translucent coil of light rises from a cured Shifted; Khan remarks on it, sometimes Sam.
+- **Shelter HUD:** core buttons stay on screen; People, Records, Relics, Awards, Sound, Tips and About sit under the "..." menu.
+- **Stairs:** faster, with a stepping motion; Max bounds up them.
+- **Names:** every survivor has a unique name (Romanian, European and universal). A name is free again only after its owner dies.
+- **Kitchen:** hot stew, coffee, herbal tea, mushroom broth, elderflower cordial. Each once a day.
+- **Calendar and birthdays:** day 1 is April 10, 2039 (originally 2092; moved in build v26.3). Sam's birthday is April 11 (38). Everyone has a birthday, zodiac sign and life path number; birthdays bring a cake, a drink and a small boost. Khan is master number 33: his last human life.
+- **Capacity and unrest:** survivors are limited to beds plus 3 places in the common area. Without food or water they sicken and die, and at unrest 3/3 they rebel: supplies are taken, Sam and Khan are hurt, a bay can be wrecked.
+- **Tips:** a few short tips at the start and when the player is idle for a long time. Can be switched off.
+- **Portraits:** new original photo face for Sam; Ali's portrait appears in the epilogue.
+- **Music:** a slower, reflective score of long swelling chords. A short sung chant plays on Khan's scripture, relics, the departed and mercy: somber or hopeful.
+- **Authorship:** copyright notice in the page, the code and an About screen; LICENSE.md in the repository; a notice appears on modified or re-hosted copies.
+
+## Build v26 (beta) · part of GitHub Update 3
+- **Day and night:** the clock now runs through the day, 06:00 to 20:00. The shelter sky follows it (morning, noon, dusk), with the sun moving and stars at dusk. At dark, a short night passes: everyone rests, the androids keep watch, then the morning report.
+- **Night outside:** sorties start in daylight and get darker. After 20:00 it is night: more enemies come, and they hit 20% harder. The old burning dawn is gone. RECALL still works from anywhere, at any time.
+- **Rain and weather:** rain falls in three depths with wind gusts, splashes and ground mist, in the shelter view and outside. Storm lightning over the shelter; drifting fog banks outside.
+- **Auto-engage:** a new AUTO ENGAGE switch on sorties. Off: you pick targets. On: each squad member picks the most dangerous target in reach, starting with whoever threatens Sam.
+- **Protect Sam:** in both modes, Khan and Max drop what they are doing to take on anyone grabbing or closing on Sam, unless you just gave them an order.
+- **Awards** stay on screen about two seconds longer.
+- **Life path:** Sam is 6, Khan is 33.
+- **Portraits:** new photo faces for Sam, Khan, Max and Bob.
+- **Portrait fix (7.1):** the character photo card now moves above the job panel on phones instead of hiding behind it, and Sam's player icon defaults to his photo (existing players switched once; "Drawn face" can still be picked in the player menu).
+
+## Build v26.2 (beta) · part of GitHub Update 3
+- **Portrait card placement:** in the shelter the selected character's card always sits below the lowest row of bays, with a margin, and above the job panel or dock. It shrinks to fit. When there is no room below the bays (landscape, desktop), it uses the left margin beside the first bay column. If neither fits, it hides instead of covering a bay. On sorties it stays where it was.
+- **Docs:** README.md rewritten with the core mechanics and a simplified story arc; new CHANGELOG.txt lists every GitHub update with its Claude build and every Claude build.
+- Menu shows "BETA · UPDATE 7.2". Service worker cache v13.
+
+## Build v26.3 (beta) · part of GitHub Update 3
+- **New timeline:** the game is now set in **2039**, eight years after the Harmonic Collapse (14 March 2031). ATLAS went live in 2029, the CHORUS array in 2030. Menu reads "2039 · EIGHT YEARS AFTER THE HARMONIC COLLAPSE".
+- **Calendar:** day 1 is April 10, 2039. Birth dates moved with it: Sam April 11, 2001 (38, life path 6), Khan September 30, 1983 (55, life path 33), Max October 4, 2035 (3). Survivors' birth years are drawn relative to 2039.
+- **Lore:** "25 years" becomes "8 years" throughout; the data-rot problem now rests on worn, warm-stored flash losing its charge within a few unpowered years (see the story bible).
+- Menu shows "BETA · UPDATE 7.3". Service worker cache v14.
+
+## Build v27 (beta) · part of GitHub Update 3
+- **Character sheet:** each character's inventory page opens on a full-length image (photo, or the drawn figure if the player chose "Drawn face") framed by equipment slots, in the style of an RPG paper doll.
+  - Sam and Khan: Head (filter mask), Body (thermal), Lining (rad shield), Belt (ground rods), Ears (dampers), Armour, Primary, Blade, Hunting, Throw, Light, Pouch.
+  - Max: Muzzle, Coat, Vest, Paws, Armour, Bite, Treats.
+  - Lit slot = equipped; dim = not crafted. Tap a gear slot to equip or unequip it (switches auto-equip off). Tap Blade to carry the axe/katana or the plain knife, Light to take or leave the flashlight, Throw to take or leave grenades and Molotovs, Hunting to change the first-choice hunting weapon.
+- **Stats card** under the image: level and rank, XP, HP, energy, radiation, skill ranks, kills, skill points, age, zodiac and life path; Khan's valor and faith; Bob's model and autonomy.
+- **Portrait card in the shelter:** sits low, just above the bottom bar; moves up above the job panel or an open sheet; never enters the bay area (falls back to the left margin beside the bays, or hides).
+- Menu shows "BETA · UPDATE 8". Service worker cache v15.
+
+## Build v27.1 (beta) · part of GitHub Update 3
+- **Fixed: sorties froze when night fell.** The sky colour was computed from a light level below its expected range, which stopped the picture from being drawn on every map once it got dark (seen on Alpine Ridge). Light is now clamped.
+- **Fixed:** errors when the last squad member fell to cold, radiation, fog or lightning in the middle of a game step; the sortie now ends cleanly.
+- **Fixed:** the flashlight flag shared a name with the lightning flash.
+- **Portrait card:** appears at once in its place when a character is tapped and glides when a panel opens; portraits are decoded up front.
+- AUTO ENGAGE button moved slightly down so it clears the top-right chips.
+- Menu shows "BETA · UPDATE 8.1". Service worker cache v16.
+
+## Build v28 (beta) · part of GitHub Update 3
+- **New timeline:** the Harmonic Collapse is **14 March 2033**; the game starts on **10 April 2042**, nine years later. 2027–2032 are the "helper years": AI assistants and home robots in every household. Menu reads "2042 · NINE YEARS AFTER THE HARMONIC COLLAPSE".
+- **Birth dates:** Sam 11 April 2004 (38 on day 2, life path 6), Khan 21 June 1986 (55, life path 33), Max 4 October 2038 (3). Survivors' birth years count from 2042 (existing saves are shifted once).
+- **Stopped helpers** on every map: home helpers, cleaners and fallen delivery drones. Search them for parts, copper, boards and sometimes power. About one in three holds a last log; some logs give intel.
+- **Flickers:** a stopped helper near the squad may wake for about three seconds, say its last line, and stop again (at most twice each).
+- **Shield can** (Workbench: 2 scrap, 2 copper). Sam carries up to 2. Tapping a stopped helper then offers WAKE IT or SALVAGE. Waking takes 5 s and gives one of: a wall safe (8 rounds, medicine, anti-rad), the floor plan with everything that moves within 22 tiles, or what it was carrying (food, water, cloth, sometimes a relic).
+- **Rebuilt helper** (Workbench: 3 parts, 2 copper, 1 power). Place it in a dormitory from the dormitory sheet: unrest drops by one more each morning and the sick recover faster. It is drawn walking in the room.
+- **Lore:** Bob is a pre-Collapse household helper that Sam rebuilt; androids are built on salvaged helper chassis; new lines for Khan, the departed and rescued survivors.
+- **Awards:** Good Morning (wake a helper), Spare Parts (salvage 10).
+- Menu shows "BETA · UPDATE 9". Service worker cache v17.
+
+## Build v29 (beta) · part of GitHub Update 3
+**Fixes**
+- **"Cannot reach" loop:** when a unit cannot path to its target, Sam or Khan now breach the brick wall in the way (tile 8) and resume the attack. If nothing can be broken, the target is dropped for that unit for 10 s (`e.nr[unit]`), auto-engage and the hunting "clear the way" logic skip it, and the toast is throttled.
+- **Bob "offline":** androids stop when the Power Bus is empty. The job panel now says so and how to restart. (The Mk II upgrade was not the cause.)
+
+**Field**
+- **Field kit** (KIT button or portrait; pauses the sortie): heal, anti-rad, field craft in 4 s from the squad's backpacks (bandage = 2 cloth; medicine = 2 reishi; anti-rad = 1 medicine + 2 parts), equip trinkets. Weapons, suits and hazard gear are read-only outside.
+- **Locked strongboxes** (tiers I-III; more in the Undercity and the Exclusion Zone). Only Sam or Khan. Lockpicking I at start; 3 locks -> II; 8 locks -> III. Pick time 4 / 7 / 10 s.
+- **16 unique items**, two special slots each for Sam, Khan and Max. Trinkets can be equipped outside; suits only in the shelter. Effects: damage resistance, radiation, cold, elements (fog, lightning, fire), hit chance, gun and blade damage, extra healing, regeneration, XP, Max's bite.
+- **Suit upgrades** (shelter, character sheet): levels 0-3; each level -6% damage, -10% cold, -8% radiation. Cost: scrap, cloth, hide.
+- **Death sounds:** one per enemy and animal type (16).
+- **AUTO ENGAGE off:** nobody attacks unless ordered or the enemy is on the next tile; no automatic rush to protect Sam (Max still frees a grabbed teammate). **On:** as before.
+- **Formation:** followers keep 2-3 tiles behind the selected character.
+- **Multi-kill:** 2+ kills from one grenade/explosion, from fire within 5 s, or a rifle round passing through (30% after a rifle kill, next enemy within 4 tiles on the same row). Call-out, sting, spoken line. Awards: first, then every 10th up to 100.
+- **Headshots:** pistol 7%, rifle 12%, shotgun 4%, bow 10% (+10 against an unaware target); 2.5x damage; 0.8 s slow motion. Awards at 1, 10, 50, 100.
+- **Kill board** ("..." menu): totals, by weapon, leaderboard (1 point per kill, 3 per multi-kill, 2 per headshot).
+
+**Shelter**
+- **Surface pads:** 4 WIND (x 36, 71.5, 107, 142) and 4 SOLAR (x 304-394). Tap to build or upgrade. Efficiency I / II / III = 1x / 1.5x / 2.1x. Pads per kind = shelter floors (max 4). Efficiency III needs the Core Vault. The old turbine is a wreck until pad 2 is built.
+- **Output** (power per day): solar = eff x 2.4 x sin(day) x (1 - 0.6 cloud) x (1 - 0.6 rain) x season; wind = eff x 2.2 x clamp((wind - 0.12) x 1.7). Seasons: daylight 0.55 / 0.85 / 1 / 0.8 and panel efficiency 1.12 / 1.04 / 0.94 / 1.04 for winter / spring / summer / autumn. Panels track the sun and stow flat at night; turbines yaw into the wind.
+- **Battery bank:** rigs charge up to 4 + 3 per battery cell. Cells: 3, or 8 with the Inverter (+25% rig output). Night: wind adds about 45% of a day's wind yield before the night's consumption. Manual generation and Charge cells are not capped.
+- **Conditions** (per person: hungry nights, thirsty nights, anxiety 0-100; shelter: dark nights, temperature): see the README table. Energy on waking = 100 - 15 per hungry night - 15 per dry night (max 3 each) - 20 if cold - 15 / 30 for anxiety 50 / 80, never below 40. A good night removes one hungry and one dry night and lowers anxiety by 25. Survivors may fall sick from cold from the second dark night.
+- **Shelter conditions sheet** ("..." menu or the red PROBLEMS chip): status, people, cause -> effect -> fix, power summary.
+- **Awards:** Click, Any Door, Tailored, Collector, Two at Once, Multi-kill x10...x100, Clean Shot, Marksman, Dead Eye, One Round Each, Daylight, Into the Wind, Off the Crank, Peak Output, Stored Light, Full Bank, Warm and Fed.
+- Source: three new parts (25 locks/gear/field kit, 26 kill board/sun/wind, 27 conditions/battery). Menu shows "BETA · UPDATE 10". Service worker cache v18.
+
+## Build v29.1 (beta) · part of GitHub Update 3
+- **Med Bay treats by itself:** the Treat job no longer uses medicine or anti-rad. Choose **Heal wounds** (+30 HP every 6 s, +10 per Med Bay level) or **Cure radiation sickness** (-40r every 6 s, -10 more per level); it repeats until the character is at full health or clear of radiation, then they rest. Medicine and anti-rad are still used on sorties and for revives.
+- **Craft orders:** the Workbench has a HOW MANY bar: minus / plus (1 to 99), quick picks 1, 5, 10, and LOOP. One tap on a recipe crafts 1 (the default each time the Workbench opens). A batch stops early if a material runs out; LOOP runs until one does. Each recipe shows how many the stock is enough for. Androids and Bob's upgrade are always single.
+- **Khan's bench:** Khan crafts only soldier's work: armour plate, ammunition, bow, arrows, spear, leather armour, combat axe, katana, grenades, Molotovs, bandages and cloth. Sam, survivors and Bob (from Mk V) craft everything.
+- Source: one new part (28 Med Bay and craft batches; 29 parts in all). Menu shows "BETA · UPDATE 10.1". Service worker cache v19.
+
+## Build v29.2 (beta) · part of GitHub Update 3
+- **Fixed: dragging a character onto the Storage room broke the game.** Rooms without a job (Storage, Dormitory, Kitchen) gave the character an empty task, which stopped the shelter from drawing. Now a drop is accepted only where that character can work.
+- **Drop back:** dropped on a room with no job, on a job that character cannot do (for example Max at the Workbench), or outside any room, the character glides back in a short arc to where they were and keeps the job they had. A message says why.
+- **Repair:** a save that already holds an empty task is repaired on load and while playing (the character rests).
+- Menu shows "BETA · UPDATE 10.2". Service worker cache v20.
+
+## Build v30 (beta) · part of GitHub Update 3
+**Battery Bay (new bay, needs the Power Bus)**
+- **Chain:** generator, sun and wind -> **24 V pack** -> Power Bus -> everyday systems (lights, heat pump, life support, hydroponics, androids). 24 V pack full -> inverter -> **48 V pack** -> Power Bus level 2 -> smelter (and later heavy machines).
+- **Cells:** "Battery cell" and "Inverter" are now crafted as items (Workbench) and installed in the bay. Tap an empty slot (+) to install a cell; tap a cell to remove it (1 copper + 1 scrap back). 3 slots per pack, 8 with the inverter installed. Cells and an inverter built in Update 10 are returned to stock for installing.
+- **24 V pack:** the Power number in the HUD is its charge. Storage = 4 + 3 per cell x health.
+- **48 V pack:** its own charge. With the inverter it charges from sun and wind whenever the 24 V pack is full; MOVE 1 POWER TO 48 V does it by hand. While it holds charge the smelter works 50% faster and uses 1 power per 2 minutes of smelting per worker. Empty or missing, the smelter runs as before.
+- **Inverter:** +25% from sun and wind, slots 4 to 8, 48 V charging.
+- **Readouts (live):** voltage (V), load current (A), load power (W), cell health (%), charge and capacity in power and Ah, for each pack. Voltage follows the state of charge (24 V pack about 21.6 to 28.4 V, 48 V pack twice that) and sags under load.
+- **Cell health:** cells lose 0.15 to 0.4% a night, 1.5% more on a cold night. Below 60% a cell is weak; below 55% it can fail (6% a night) and stores nothing until replaced.
+- **Self-test:** runs every morning and on RUN SELF-TEST (cells are scanned one by one): per-pack cell count, health, capacity against nominal, weak and failed cells, inverter state. Failures appear in the morning report.
+- **Room art:** two racks with eight cell positions each (lit by charge, amber when weak, flashing red when failed), a voltage readout per rack, the inverter with a turning fan, and charge moving along the bus bar.
+
+**Med Bay extensions and the lost squad**
+- **Lost sortie:** if every squad member who went out has fallen (nobody standing, nobody wounded-but-alive), the mission fails. They are carried in, resuscitated and kept in a **coma for 3 days**; everything they carried is lost. The game is not over.
+- **Intensive Care** (new bay, needs the Med Bay): coma lasts 2 days instead of 3. Shows who is in a coma and for how long.
+- **Isolation Room** (new bay, needs the Med Bay): people wake at 60 HP, clear of radiation and calm (28 HP without it).
+- Unchanged: on a sortie a fallen squad mate can only be bandaged or carried while someone is still standing; a single fallen character with survivors is carried home as before.
+- **Awards:** Industrial, Carried Home; Stored Light and Full Bank now count installed cells.
+- Source: one new part (29 battery bay and ICU; 30 parts in all). Menu shows "BETA · UPDATE 3". Service worker cache v22.
