@@ -1,7 +1,7 @@
 /* Project Atlas - Earthside - offline support.
    Always tries the network first, so a new upload shows up straight away;
    falls back to the saved copy when there is no connection. */
-const CACHE = 'atlas-earthside-v22';
+const CACHE = 'atlas-earthside-v23';
 const FILES = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())); });

@@ -172,7 +172,7 @@ Includes builds v15 to v21. GitHub Update 1 was build v14.
 
 
 ## Versioning
-GitHub updates are numbered in commit order. The internal (Claude) build number is shown in brackets. **Update 1 = build v14. Update 2 = builds v15 to v21. Update 3 = builds v22 to v30.** Builds v22 to v29.2 were delivered as files and previews but never committed; each has its own section below, and all of them belong to the third GitHub update. Lines below that say "Menu shows BETA · UPDATE n" record what that build showed at the time; the committed game shows "BETA · UPDATE 3" (service worker cache v22).
+GitHub updates are numbered in commit order. The internal (Claude) build number is shown in brackets. **Update 1 = build v14. Update 2 = builds v15 to v21. Update 3 = builds v22 to v30. Update 4 = builds v31 to v34.** Builds v22 to v29.2 were delivered as files and previews but never committed; each has its own section below, and all of them belong to the third GitHub update. Lines below that say "Menu shows BETA · UPDATE n" record what that build showed at the time; Update 3 as committed showed "BETA · UPDATE 3" (service worker cache v22); Update 4 as committed shows "BETA · UPDATE 4" (cache v23). Build v31 was packaged as Update 4 on 19 November but not uploaded, so GitHub Update 4 holds builds v31 to v34.
 
 ## Build v22 (beta) · part of GitHub Update 3
 - Controls: compact survivor chips and one bottom row (End Day, Sortie). Jobs pop up over the scene when a survivor is tapped and close after a pick, a tap elsewhere, or 9 s. Sortie: compact unit chips, action row, and Follow / Pack / Recall; the backpack opens as a pop-up. Controls stay along the bottom in portrait and landscape.
@@ -354,7 +354,7 @@ GitHub updates are numbered in commit order. The internal (Claude) build number 
 ## Build v30 (beta) · part of GitHub Update 3
 **Battery Bay (new bay, needs the Power Bus)**
 - **Chain:** generator, sun and wind -> **24 V pack** -> Power Bus -> everyday systems (lights, heat pump, life support, hydroponics, androids). 24 V pack full -> inverter -> **48 V pack** -> Power Bus level 2 -> smelter (and later heavy machines).
-- **Cells:** "Battery cell" and "Inverter" are now crafted as items (Workbench) and installed in the bay. Tap an empty slot (+) to install a cell; tap a cell to remove it (1 copper + 1 scrap back). 3 slots per pack, 8 with the inverter installed. Cells and an inverter built in Update 10 are returned to stock for installing.
+- **Cells:** "Battery cell" and "Inverter" are now crafted as items (Workbench) and installed in the bay. Tap an empty slot (+) to install a cell; tap a cell to remove it (1 copper + 1 scrap back). 3 slots per pack, 8 with the inverter installed. Cells and an inverter built in build v29 are returned to stock for installing.
 - **24 V pack:** the Power number in the HUD is its charge. Storage = 4 + 3 per cell x health.
 - **48 V pack:** its own charge. With the inverter it charges from sun and wind whenever the 24 V pack is full; MOVE 1 POWER TO 48 V does it by hand. While it holds charge the smelter works 50% faster and uses 1 power per 2 minutes of smelting per worker. Empty or missing, the smelter runs as before.
 - **Inverter:** +25% from sun and wind, slots 4 to 8, 48 V charging.
@@ -370,3 +370,116 @@ GitHub updates are numbered in commit order. The internal (Claude) build number 
 - Unchanged: on a sortie a fallen squad mate can only be bandaged or carried while someone is still standing; a single fallen character with survivors is carried home as before.
 - **Awards:** Industrial, Carried Home; Stored Light and Full Bank now count installed cells.
 - Source: one new part (29 battery bay and ICU; 30 parts in all). Menu shows "BETA · UPDATE 3". Service worker cache v22.
+
+## Build v31 (beta) · part of GitHub Update 4
+Previewed as `atlas-update4-preview.html` and approved by Sam on 19 November 2026.
+
+**The shelter view**
+- **Depth:** every bay is drawn as a concrete box seen from the front: side walls, ceiling and a floor that runs back into the room. The walls and the floor lines follow the view, so a bay left of centre shows its left wall and a bay below the eye line shows more ceiling. Shadowed corners, a lamp cone on the back wall and a light pool on the floor (skipped on the Minimal graphics level). Each floor slab shows its front face. Unbuilt spots are raw alcoves in the rock.
+- **Layers that move at their own speed:** two far ridgelines, the dead plant and the town, the shelter, then conduits, a sagging cable, grass, rubble and a fence line in front. The cut earth has strata, stones, roots and a buried main.
+- **Sky and margins:** the view now travels 170 units above the surface, 150 to each side and 70 below the lowest floor. Zoomed far out, the ground line can sit between a third and just past half way down the screen and the rest is sky; turbines and solar arrays are never cut. Zoom range 0.3 to 2.4 (was 0.5 to 2.4) in the shelter and on sorties; on a sortie the view can be dragged 5 tiles past either end and up into the sky.
+- **Depth of the shelter:** up to 6 floors (was 4).
+
+**Bays**
+- **Moving:** three ways. Press and hold a bay (0.33 s) and drag it; press and hold without dragging, which starts move mode; or MOVE BAY at the top of any bay's sheet. In move mode free spots are green (MOVE HERE) and bays that can trade places are blue (SWAP); CANCEL ends it. A press that starts on a character standing in a bay also picks the bay up after 0.5 s. A two-cell bay lands where it fits around the spot touched.
+- **Swapping:** a bay dropped on another bay asks "Swap bays?". Levels, workers and installed parts stay with each bay. The airlock does not move. If the two do not fit in each other's place, the game says so.
+- **More of the same bay:** Hydroponics, Water Reclaimer, Mushroom Bay, Dormitory, Med Bay, Smelter and Battery Bay can be built more than once: 2 per kind with 2 floors, 3 with 3, 4 with 4 or more. Each further copy costs 50% more. Levels add up: work speed uses the sum of levels, hydro trays and rain collectors count every level, each Mushroom Bay adds 3 beds, each Battery Bay adds a rack (3 slots per pack, 8 with the inverter). Workers spread over the copies. The other bays are one per shelter.
+
+**People**
+- **One PEOPLE button** in the bottom row replaces the row of survivor cards; Sam, Khan, Max, Bob and androids keep their cards. It shows the count against the limit.
+- **The list:** everyone who joined, newest at the bottom, each with level, specialisation, gender, partner, faith, condition (sick, hurt, exhausted, hungry, thirsty, cold, anxious, no bed, recovering, expecting) and stars. Filters: status, level, specialisation, gender, relationship, faith. Group by any of these, with TICK GROUP.
+- **Acting on many:** tick people (or ALL), then HEAL (free in a Med Bay, otherwise 1 medicine each: cures sickness and gives 30 HP, +10 per Med Bay level), REST, EXTRA RATION (1 food each, +25 energy), or give them all one job. JOB on a row opens that person's job panel.
+- **Specialisation:** 300 seconds of work at one job makes someone a Farmer, Water tech, Power hand, Smelter, Radio operator, Mushroom keeper, Guard, Maker or Medic: +10% at that job. Applies to everyone, including androids.
+- **Limit:** the smaller of beds + 3 common-area places and 6 people per floor. The list says which of the two sets the limit and what raises it.
+
+**The top bar**
+- The five numbers are labelled FOOD, WATER, POWER, AMMO, ARMOR. Tapping one opens its panel: what it is, where it comes from, what happens at zero, who is on it now; today's made by day, made at night, brought from sorties, used, lowest and highest stock, net; a table for today, 7 days and 30 days (total, average per day, weakest and best day, day shift, night, sorties, used, stock range); bars for the last 14 days; and a legend for the whole top bar.
+- **Shortages:** when food, water or power hits zero the game records when and for how long. Whoever is making it when it comes back gets a star (20 XP) and is named in the panel; a sortie that brings it home credits Sam and Khan. Awards: Back On Line, Three Stars, Troubleshooters, Iron Shift (an android ends one).
+- Statistics are kept for 36 days in the save.
+
+**Power**
+- **Power Bus:** the switchboard, with the hand generator and a buffer of its own: 6 power at level 1, 9 at level 2, 12 at level 3 (4 before it is built).
+- **Battery Bay:** the racks. Empty racks store nothing.
+- **Battery modules** (the crafted battery cells): the storage. Only with at least one working module in the 24 V pack is power from solar arrays and wind turbines kept, up to buffer + 3 per module.
+- **Without modules:** array power is used as it is made. While it flows, Hydroponics and Water run 20% faster and the hand at the Power Bus charges the buffer up to 2.5 times faster. Night wind carries what the night needs at that moment and no more. The hand generator stops when the buffer (or the modules) are full, with a message.
+- **Shown in the game:** modules are drawn in their slots with terminals and a charge bar; a sign over the racks reads STORING or NO MODULES · NOT STORING; a tag on the surface reads LIVE ONLY · NOT STORED, STORING or MODULES FULL, with charge moving on the feeder cable. The Power panel, the Power Bus sheet and the Battery Bay sheet open "Power, in three parts", which explains all three with a flow diagram and the next step.
+
+**Sorties**
+- **One revive:** anyone who falls (now Sam too) goes down bleeding for 75 s and can be got up once per sortie. A second fall, or bleeding out, cannot be undone outside: they are carried home into a coma in intensive care for one full day (awake by the next morning with the Intensive Care room). Sam no longer wakes at once with medicine. The Med Bay revive (2 medicine, 2 power) still brings someone back early. A squad that is wiped out is still the 3-day coma.
+- **Helping each other:** the field kit has HELP A SQUAD MATE: heal them from your kit (medicine 30, bandage 18, organ meat 22, treat 25 for Max), give anti-rad, or pass any backpack stack (GIVE 1 or ALL), within 8 tiles. Ammo and arrows were already one pool for the squad; the kit now says so. Awards: Field Medic, Pass It On.
+- **Movement:** steps follow the ground actually covered, so feet no longer slide, and a walk eases in and out instead of snapping. In the shelter, people at a job work with their hands.
+- **Blood:** a kill bleeds out in four or five fading pulses that feed the pool; squad members under 45 HP and enemies under half health leave drops as they move.
+
+**Other**
+- How to Play has three new entries. New awards: Twice the Bay, Full House.
+- Source: three new parts (31 depth and bays, 32 people, top bar and power, 33 sorties; 33 parts in all). Menu shows "BETA · UPDATE 4". Service worker cache v23.
+
+## Build v32 (beta) · part of GitHub Update 4
+Previewed as `atlas-update5-preview.html`.
+
+**Blood**
+- Every drop is a particle with mass, quadratic drag, gravity (800 px/s²) and wind outdoors, moved in small sub-steps so fast drops do not pass through walls. Big fast drops break up in flight and trail a short tail.
+- **Floors:** a stain stretched along the direction of travel (longer for shallow, fast impacts), with a satellite tail and crown droplets; a drop that lands on fresh blood joins the stain instead of lying on top.
+- **Walls and back wall:** spatter with a run that grows downward at its own speed and wobbles; indoors part of every spray has depth and ends on the room's back wall. Fast drops throw back-spatter.
+- **Ceilings:** stains hold volume and release real drops that fall and land.
+- **Pools** under bodies merge and grow lobes; **bootprints** from anyone who walks through a pool; outdoor rain washes stains and pools away.
+- **Hits:** guns and the bow make an entry puff and an exit cone; blades and clubs fling a line of drops (cast-off); some blood is thrown up hard enough to reach the ceiling. Squad members bleed when hit. Close messy kills can put blood on the screen.
+- **Wounds and parts:** entry wound with a bruise ring and a trickle, ragged exit wound, cuts, claw marks, soaked cloth; stumps drip; severed parts twitch, roll and leave smears, and squad members kick resting parts.
+- Stain limits per graphics level; when the limit is reached the floor is cleared first and walls and ceilings stay.
+
+**Weather**
+- **Rain** stops at the first roof or floor it meets and splashes there, with rings in puddles and drips from roof edges.
+- **Snow** settles per column, thaws slowly and is pressed down where people walk; on the shelter surface snow and rime settle too.
+- **Fog** drifts in puffs that part around people and thin indoors.
+- **Frost** grows in from the edges of the screen as branching crystals in deep cold; **breath** shows in the cold.
+- The weather chip says Light snow, Snow, Heavy snow, Blizzard or Ash snow when it is snowing.
+
+## Build v33 (beta) · part of GitHub Update 4
+**More blood and gore**
+- About 1.5× (Light), 1.9× (Balanced) and 2.3× (High) as much blood from each wound, with higher limits for drops and stains.
+- **Arteries:** a severed limb or head pumps blood in pulses that follow a heartbeat which slows and weakens over 3–4 seconds; heavy non-lethal hits can open a smaller one.
+- **Strands:** a severed part stays tied to the body by a strand of tissue that stretches, holds it back for a moment and snaps, flicking blood from both ends.
+- **Flying parts** leave blood trails, and splat on floors and walls they hit with a wet thud.
+- Rifle and shotgun hits tear off small pieces; explosions keep bleeding for a moment; blood mist is drawn in two soft layers.
+
+**Sound**
+- The whole mix is tilted: +3.5 dB below 150 Hz, −4 dB around 2.6 kHz, −8 dB above 4.2 kHz, a gentle low-pass at 9.5 kHz and a new compressor. Reverb and rain lose their hiss.
+- Tones above 1.1 kHz are played quieter, and buzzy square waves above 500 Hz become softer triangle waves.
+- New body sounds built from low thumps, wet filtered noise, squelches and bone cracks: flesh hits by weapon, severing, head bursts, pumping blood, parts landing, walking through pools.
+- Deeper gunshots; softer clicks, button taps, metal steps and dog yelp; lower deaths for roaches, Echoes, hunters and hounds.
+
+## Build v34 (beta) · GitHub Update 4
+**Sortie camera and tapping**
+- **Free pan:** drag in any direction, past both ends of the map, above the roofs and below the ground (cut earth is drawn there); a flick keeps gliding. The view stays where you leave it until you tap **CENTER**, pick another character, or the selected character walks within a few percent of the screen edge.
+- **Tap markers:** ground (a ripple at the exact spot), object (yellow brackets), enemy (rotating red reticle), animal (orange), person, helper or collapsed Shifted (green), squad member (blue), breach (orange), no route (red X). Whatever the selected character is working on or aiming at glows softly.
+- **Exact stop:** people stop where you tapped inside a tile, not on its middle; followers spread a little instead of stacking.
+
+**Characters**
+- Sam: olive field coat with a cream fleece collar, messy dark hair, dark beard greying at the chin (new look options Field jacket, Messy hair, Dark brown hair, Salt & pepper beard; new default). Players still on the original default look move to it once; custom looks are kept.
+- Khan: ribbed olive beanie, long grey beard and moustache, heavier brows. Max: black-and-tan shepherd with a black saddle and muzzle mask, tall ears, brown eyes.
+
+**Life and overgrowth**
+- Birds (crows, pigeons, gulls, sparrows, ravens by map) perch on roofs, peck and hop, take off at footsteps (less when sneaking) and at shots, and land again further on; far flocks cross the sky; bats at night over water and woods.
+- Rats run along indoor floors and flee; butterflies by day and fireflies at night in the Forest and Hunting Grounds.
+- Ivy climbs the outside walls of ruined buildings, hangs from roof edges and grows up inside rooms; moss and grass on roofs, saplings on some roofs.
+
+**Guns, arrows, spear**
+- Each shot is built from a crack, a blast, a low thump, then either the room booming (indoors) or a rolling tail with echoes off buildings (outdoors), then the gun's own action: pistol slide, rifle bolt, shotgun pump. Brass cases and red shotgun hulls fly out and bounce with a tinkle.
+- Star-shaped muzzle flash, smoke puffs, recoil, fast tracers.
+- Arrows fly an arc, turn along their path and stick in the target or the ground for a while. The spear thrust winds up and follows through.
+
+**Mining and surprises**
+- **Ore veins:** copper, gold and coal in the rock or as boulders on every map, mixed by map (gold in the Alps and the Zone, coal in the woods and on the rail lines). Tap MINE; only Sam or Khan can dig (Khan 25% faster); pick strikes, chips and noise.
+- **Coal** is a new resource. New recipes: Gold-contact PCB (1 copper, 1 gold, 1 parts → 2 PCB), Copper coil pack (3 copper, 1 scrap → 2 parts).
+- **One surprise per sortie,** placed about 30 to 70 tiles out and hinted on the SDR at the start: a warm meteorite (dig: gold, copper, a board), a supply drop under a parachute (medicine, anti-rad, bandages, ammo), a fuel depot (8 coal), a gold seam (dig), a time capsule from 2033 (intel, boards, gold and a note), a soldier's cache (grenades, ammo, armour). A light beam marks it once seen.
+
+**New bays**
+- **Backup Generator** (6 scrap, 3 parts, 3 copper; 2 levels): when the batteries cannot cover the night it burns coal, 3 power per coal (4 at level 2); AUTO START on or off; BURN 1 COAL NOW. The morning report says what it burned.
+- **Rec Room** (4 scrap, 3 parts, 1 PCB; 2 levels): after a night with power everyone at home wakes with 10% less anxiety per level.
+- **Library** (4 scrap, 1 parts, 1 intel; 2 levels): every evening +5 XP per level for everyone at home and 4% less anxiety per level.
+
+**Sound and radiation**
+- Footsteps by surface (concrete and metal, gravel, snow, leaves, water) and by walker (Khan heavier, robots metallic, Max's paws with claw clicks on hard floors), quieter when sneaking.
+- **Max barks at big enemies** (brutes, Kilns, Hollows, the Choir) within 8 tiles: they are slowed to 45% for 3.5 s (every 7 s at most).
+- **Geiger counter:** short sharp clicks at random intervals, with rare background clicks on clean ground; a small dial beside the radiation chip on every sortie shows µSv/h (green, yellow above 1, red above 10) and blinks with each click. Tap it for an explanation.
+- Menu shows "BETA · UPDATE 4". Service worker cache v23.

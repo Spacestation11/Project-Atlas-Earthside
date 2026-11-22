@@ -15,11 +15,15 @@ Update 1    = build v14          First upload. Includes everything from v1 to v1
 Update 2    = build v21          Includes builds v15 to v21.
 Update 3    = build v30          Includes builds v22 to v30 (v22, v23, v24, v25, v26, v26.1,
                                  v26.2, v26.3, v27, v27.1, v28, v29, v29.1, v29.2, v30).
+Update 4    = build v34          Includes builds v31 to v34: depth, bays, people, top bar,
+                                 power storage, particles, gore, weather, sound, free
+                                 sortie camera, wildlife, mining, new bays.
 
 Note: builds v22 to v29.2 were delivered as files and previews but never committed.
 Earlier notes that called them "Update 3" to "Update 11" referred to planned commits;
-they are all part of GitHub Update 3. The commit message of each update names its
-build ("Update N (build vX): ...").
+they are all part of GitHub Update 3. Build v31 was packaged as "Update 4" on
+19 November but not uploaded; it went into GitHub Update 4 together with v32 to v34.
+The commit message of each update names its build ("Update N (build vX): ...").
 
 ======================================================================
 B. ALL CLAUDE BUILDS
@@ -139,3 +143,71 @@ v30     Battery Bay: battery cells and the inverter are crafted as items
         Lost sortie: if the whole squad falls, they are carried home
         into a 3-day coma (2 with Intensive Care) and wake in the
         Isolation Room. Two new Med Bay extension bays.       -> GitHub Update 3
+v31     Shelter drawn with depth: box rooms with walls, ceiling and a
+        floor that follow the view, far ridges, foreground layer, cut
+        earth. View travels past the shelter on every side with sky
+        headroom; wider zoom range; shelter up to 6 floors.
+        Bays: move by drag, long press or MOVE BAY; a drop on another
+        bay offers a swap; seven bay kinds can be built more than once.
+        PEOPLE button with filters, groups and actions on many people;
+        specialisations; people limit explained (beds + 3, or 6 a floor).
+        Top bar labelled; each number opens a panel with day, night,
+        7-day and 30-day figures, shortages and who ended them (stars).
+        Power: bus buffer 6/9/12; sun and wind are kept only with
+        battery modules installed, otherwise used as they are made;
+        modules visible in the bay; "Power, in three parts" guide.
+        Sorties: one revive per person, then a day in intensive care;
+        field kit heals others and passes items; eased walking, work
+        pose, bleeding kills and blood trails.
+v32     Blood as particles with mass, drag, gravity and wind: drops
+        break up in flight and stain what they hit. Floors get marks
+        stretched by the impact angle, side walls and the back wall of
+        rooms get spatter that runs down, ceilings drip. Pools merge,
+        boots leave prints, rain washes the street.
+        Bullets leave an entry puff and an exit cone; blades fling a
+        line of drops. Entry and exit wounds, cuts, claw marks, soaked
+        cloth, dripping stumps, parts that twitch, roll and can be
+        kicked.
+        Weather: rain stops at roofs and splashes, snow lies and is
+        trodden down, fog drifts and parts around people, frost grows
+        in from the screen edge in deep cold, breath in the cold. The
+        weather chip says snow when it snows.
+v33     About twice as much blood at Balanced graphics, more at High.
+        Arteries pump in time with a heartbeat that slows and weakens;
+        a severed part stays tied by a strand that stretches and snaps;
+        flying parts leave trails and splat on floors and walls; heavy
+        rounds tear small pieces off; layered blood mist.
+        Sound: the whole mix is tilted down (less hiss, more body),
+        bright tones are softer and lose their buzz, softer reverb and
+        rain. New low, wet sounds for hits, severing, head bursts,
+        landing parts, pumping blood and walking through pools;
+        deeper gunshots.
+v34     Sorties: drag pans freely in every direction with a gliding
+        flick, past the map edges; the view stays put until CENTER, a
+        new selection, or the selected character nears the screen edge.
+        Tap markers: ground (ripple at the exact spot), object (yellow
+        brackets), enemy (red reticle), animal (orange), person or
+        helper (green), squad member (blue), no route (red X); the
+        current target glows softly. People stop where you tapped.
+        Sam (field coat with fleece collar, messy dark hair, salt-and-
+        pepper beard), Khan (ribbed beanie, long grey beard) and Max
+        (black-and-tan shepherd) drawn closer to their portraits;
+        players still on the original default look move to it.
+        Life: birds perch, peck, scatter at footsteps and shots and
+        land again; far flocks; rats indoors; butterflies and
+        fireflies in the woods; bats at night. Ivy, moss, hanging
+        curtains and roof saplings on ruined buildings, vines indoors.
+        Guns: layered shots (crack, blast, thump, room or open-air
+        echo), pistol slide, rifle bolt, shotgun pump, brass and hulls
+        that bounce, smoke, star muzzle flash, recoil, fast tracers.
+        Arrows fly an arc and stick; the spear thrust winds up.
+        Mining: copper, gold and coal veins on every map (Sam or
+        Khan). New resource: coal. New recipes: Gold-contact PCB,
+        Copper coil pack. One surprise per sortie (meteorite, supply
+        drop, fuel depot, gold seam, time capsule, soldier's cache),
+        hinted on the SDR.
+        New bays: Backup Generator (burns coal on short nights), Rec
+        Room (calmer mornings), Library (XP and calm).
+        Footsteps by surface and walker; Max barks at big enemies and
+        slows them; Geiger clicks and an always-on Geiger dial.
+                                                      -> GitHub Update 4
