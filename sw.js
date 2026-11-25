@@ -1,11 +1,13 @@
 /* Project Atlas - Earthside - offline support.
    Always tries the network first, so a new upload shows up straight away;
    falls back to the saved copy when there is no connection. */
-const CACHE = 'atlas-earthside-v23';
+const CACHE = 'atlas-earthside-v24';
 const FILES = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
+  /* music streams straight from the network (Range requests, never cached here) */
+  if (e.request.headers.has('range') || e.request.destination === 'audio' || /\/audio\//.test(new URL(e.request.url).pathname)) return;
   e.respondWith(fetch(e.request).then(r => { const copy = r.clone(); caches.open(CACHE).then(c => c.put(e.request, copy)); return r; }).catch(() => caches.match(e.request).then(m => m || caches.match('index.html'))));
 });

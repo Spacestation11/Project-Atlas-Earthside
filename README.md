@@ -5,6 +5,7 @@ Run an underground shelter by day, take Sam, Khan and Max out on sorties into th
 
 **Play:** https://spacestation11.github.io/Project-Atlas-Earthside/
 Works on phone, tablet and desktop. The whole game is `index.html`: no build step, no libraries, no server.
+With an original soundtrack that adapts to the game.
 
 Status: beta, GitHub Update 4 (build v34). See `CHANGELOG.txt` for every version.
 

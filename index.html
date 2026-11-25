@@ -1375,12 +1375,13 @@ function menuMain(){
     PROFILES.slice().sort(function(a,b){return (b.last||0)-(a.last||0);}).forEach(function(p){var sv=hasSave(p),jk=JKT[p.jacket]||JKT.rust;
       h+='<button class="prow" data-p="'+p.id+'"><i style="background:'+jk.j2+'">'+esc(p.name[0]||'?').toUpperCase()+'</i><span><b>'+esc(p.name)+'</b><small>'+(sv?'Day '+(p.day||1)+' · played '+whenTxt(p.last):'No game started yet')+'</small></span><em>'+(sv?'CONTINUE':'START')+'</em></button>';});}
   else h+='<p style="margin:14px 2px 10px;color:#cbd5e1">Create a player to begin. Your player and progress are stored in this browser, so only you see them here.</p>';
-  h+='<button class="btn go" id="mNew" style="width:100%;margin-top:8px">'+svg('plus',18)+'NEW PLAYER</button><button class="btn" id="mHow" style="width:100%;margin-top:8px">HOW TO PLAY</button>';
+  h+='<button class="btn go" id="mNew" style="width:100%;margin-top:8px">'+svg('plus',18)+'NEW PLAYER</button><button class="btn" id="mHow" style="width:100%;margin-top:8px">HOW TO PLAY</button><button class="btn" id="mSnd" style="width:100%;margin-top:8px">SOUND &amp; MUSIC</button>';
   h+='<p class="inote">Players and saves stay on this device. Accounts that follow you to other devices come after the beta.</p>';
   menuShell(h);
   Array.prototype.forEach.call($('#mbox').querySelectorAll('.prow'),function(el){el.addEventListener('click',function(){sfx.ui('tap');var p=PROFILES.filter(function(q){return q.id===el.dataset.p;})[0];if(p)menuPlayer(p);});});
   $('#mNew').addEventListener('click',function(){sfx.ui('tap');menuCreate();});
   $('#mHow').addEventListener('click',function(){sfx.ui('tap');menuHow();});
+  $('#mSnd').addEventListener('click',function(){sfx.ui('tap');openSoundMenu();});
 }
 function drawnFace(d){return withLook(d,function(){return portraitOf('sam');});}
 function facePick(p){var d={jacket:p.jacket,look:p.look||defLook()};return p.face==='upload'&&p.img?p.img:p.face==='photo'?SAMFACE:drawnFace(d);}
@@ -4886,12 +4887,12 @@ setInterval(function(){try{if(!S||MODE==='title'||MODE==='over'||document.queryS
 /* ---------- shelter HUD: core buttons stay, extras live under MORE ---------- */
 setTimeout(function(){try{var chips=document.querySelector('#hud .chips');if(!chips||document.getElementById('moreBtn'))return;var b=document.createElement('button');b.className='chip';b.id='moreBtn';b.style.fontFamily='inherit';b.innerHTML=svg('more',16);b.title='More';b.style.padding='0 8px';b.setAttribute('aria-label','More');chips.appendChild(b);var sb=document.getElementById('sndBtn2');if(sb)sb.style.display='none';
   var pop=document.createElement('div');pop.id='morePop';document.getElementById('app').appendChild(pop);
-  function draw(){pop.innerHTML=[['people','users','People & birthdays'],['rec','list','Records'],['rel','star','Relics & Khan’s paths'],['aw','grid','Awards'],['cond','heart','Shelter conditions & guide'],['board','aim','Kill board & leaderboard'],['snd','power',AU.on?'Sound: on':'Sound: off'],['tips','flag',S&&S.tipsOff?'Tips: off':'Tips: on'],['about','shield','About & copyright']].map(function(q){return '<button data-m="'+q[0]+'">'+svg(q[1],16)+'<span>'+q[2]+'</span></button>';}).join('');}
+  function draw(){pop.innerHTML=[['people','users','People & birthdays'],['rec','list','Records'],['rel','star','Relics & Khan’s paths'],['aw','grid','Awards'],['cond','heart','Shelter conditions & guide'],['board','aim','Kill board & leaderboard'],['snd','power','Sound & music'],['tips','flag',S&&S.tipsOff?'Tips: off':'Tips: on'],['about','shield','About & copyright']].map(function(q){return '<button data-m="'+q[0]+'">'+svg(q[1],16)+'<span>'+q[2]+'</span></button>';}).join('');}
   b.addEventListener('click',function(ev){ev.stopPropagation();sfx.ui('tap');if(pop.className==='on'){pop.className='';return;}draw();var r=b.getBoundingClientRect(),a=document.getElementById('app').getBoundingClientRect();pop.style.top=(r.bottom-a.top+6)+'px';pop.style.right=Math.max(8,a.right-r.right)+'px';pop.className='on';});
   document.addEventListener('pointerdown',function(ev){if(pop.className==='on'&&!pop.contains(ev.target)&&ev.target!==b)pop.className='';});
   pop.addEventListener('click',function(ev){var t=ev.target.closest('button[data-m]');if(!t)return;pop.className='';sfx.ui('tap');var m=t.dataset.m;
     if(m==='people')openPeople();else if(m==='rec')openRecords();else if(m==='rel')openRelics();else if(m==='aw')openAwards();else if(m==='board')openBoard();else if(m==='cond')openCond();
-    else if(m==='snd'){var sb2=document.getElementById('sndBtn2');if(sb2)sb2.click();}else if(m==='tips'){S.tipsOff=!S.tipsOff;toast(S.tipsOff?'Tips are off.':'Tips are on.','#93c5fd');save();}
+    else if(m==='snd'){openSoundMenu();}else if(m==='tips'){S.tipsOff=!S.tipsOff;toast(S.tipsOff?'Tips are off.':'Tips are on.','#93c5fd');save();}
     else if(m==='about')showModal('<div class="sub">ABOUT</div><h2>Project Atlas: Earthside</h2><p>'+ATLAS_SIG.notice+'</p><p style="opacity:.7;font-size:12px">Official version: '+ATLAS_SIG.home+'<br>Mark: '+ATLAS_SIG.mark+'</p>',[{label:'CLOSE',cls:'go',fn:hideModal}]);});}catch(e){}},300);
 
 /* ---------- music: slow, searching, patient ---------- */
@@ -7669,4 +7670,582 @@ function drawActLabels2(){var L=X._lab||[];X._lab=[];if(!L.length)return;L.sort(
   fillRR(x0,y0,w,h,7,'rgba(8,11,16,.86)');ctx.strokeStyle='rgba(255,255,255,.12)';ctx.lineWidth=1;ctx.strokeRect(x0+.5,y0+.5,w-1,h-1);
   ctx.fillStyle='#e5e7eb';ctx.textAlign='left';ctx.fillText(lab,x0+7,y0+(sel?11:10));ctx.fillStyle=col;ctx.textAlign='right';ctx.fillText(tl,x0+w-7,y0+(sel?11:10));ctx.textAlign='left';
   ctx.fillStyle='rgba(255,255,255,.12)';ctx.fillRect(x0+7,y0+h-7,w-14,3);ctx.fillStyle=col;ctx.fillRect(x0+7,y0+h-7,(w-14)*pr,3);placed.push([x0,y0,w,h]);});}
+/* ====================================================================
+   BUILD v35 · MUSIC
+   The original soundtrack. One MusicManager plays it; the rest of the
+   game only says where the player is and what is going on.
+     menu    : title and menu screens. Ashen Road, crossfading into
+               itself at its end, never restarted between menu screens.
+     sortie  : Ashen Road and Unbroken. The first is picked at random
+               (rarely the one the last sortie started with), then they
+               alternate, each played to its end.
+     shelter : a rotation of five tracks, each played to its end and
+               crossfaded into the next. Opening order first, then a
+               weighted pick (share x transition preference x context
+               bias), never the same track twice in a row, every track
+               at least once in every 8 picks. A lasting crisis brings
+               Brownout, a storm brings Overhead.
+   Part 1 (between the DIRECTOR markers) is the tuning table and the
+   director: pure logic with no audio, no DOM and no game state, so it
+   can be tested on its own (tests/music-director.test.js).
+   Part 2 is the engine: two streamed <audio> elements on their own
+   music bus of the game's AudioContext, plus the glue to the game.
+   ==================================================================== */
+/* MUSIC-DIRECTOR-BEGIN */
+/* Every tunable number. Times in seconds, levels in dB. The files are
+   loudness-matched already: use db per track only for small offsets. */
+var MUSIC_T={
+  dir:'audio/',
+  tracks:{
+    ashen_road:{file:'sortie_01_ashen_road.mp3',db:0},
+    unbroken:{file:'sortie_02_unbroken.mp3',db:0},
+    lamplight:{file:'shelter_01_lamplight.mp3',db:0},
+    low_power:{file:'shelter_02_low_power.mp3',db:0},
+    relay_hum:{file:'shelter_03_relay_hum.mp3',db:0},
+    overhead:{file:'shelter_04_overhead.mp3',db:0},
+    brownout:{file:'shelter_05_brownout.mp3',db:0}
+  },
+  /* menu */
+  menu_track:'ashen_road',
+  menu_start_fade:2.0,        /* the very first start of the title music */
+  menu_xfade:5.5,             /* Ashen Road into itself at its end */
+  menu_to_game_fade:5.0,      /* start or continue a game: into Lamplight */
+  game_to_menu_fade:3.5,      /* back to the title: into Ashen Road */
+  first_input_fade:4.0,       /* the music waits for the first tap, then fades in */
+  /* sortie */
+  sortie_playlist:['ashen_road','unbroken'],
+  sortie_fade:5.0,            /* shelter -> sortie, and sortie -> shelter */
+  sortie_xfade:5.5,           /* one sortie track into the other */
+  sortie_repeat_first_weight:0.25,   /* the track the last sortie started with, against 1 */
+  stop_fade:4.0,              /* lost sortie, game over: fade to silence */
+  /* shelter rotation */
+  shelter_tracks:['lamplight','low_power','relay_hum','overhead','brownout'],
+  shelter_first:'lamplight',
+  shelter_opening:['lamplight','relay_hum','brownout','low_power','relay_hum','overhead','brownout'],
+  shelter_xfade:9.0,
+  shelter_share:{relay_hum:0.28,brownout:0.28,lamplight:0.16,low_power:0.16,overhead:0.12},
+  shelter_next:{
+    lamplight:{relay_hum:3,brownout:2,low_power:2,overhead:1},
+    relay_hum:{brownout:3,lamplight:2,low_power:2,overhead:1},
+    brownout:{low_power:3,relay_hum:3,lamplight:2,overhead:1},
+    low_power:{brownout:3,relay_hum:2,lamplight:2,overhead:1},
+    overhead:{brownout:3,low_power:2,relay_hum:2,lamplight:2}
+  },
+  shelter_window:8,           /* every track at least once in this many picks */
+  bias_night:{low_power:2.5,brownout:1.5,lamplight:0.5,relay_hum:0.7},   /* night or low power */
+  bias_work:{relay_hum:2.0,lamplight:1.3,brownout:0.6},                 /* a room job or crafting */
+  bias_return:{lamplight:2.0,relay_hum:1.5},                            /* the first pick after a sortie */
+  report_wait:1.5,            /* back from a sortie: wait at most this long for the shelter's first report */
+  /* interrupts */
+  crisis_track:'brownout',
+  crisis_fade:17.0,
+  crisis_enter:10.0,          /* a crisis must last this long */
+  crisis_exit:30.0,           /* and be clear this long before it lets go */
+  storm_track:'overhead',
+  storm_fade:10.0,
+  storm_level:0.3,            /* the weather model's storm value that counts as a storm */
+  storm_enter:6.0,
+  storm_exit:45.0,
+  interrupt_guard:30.0,       /* no storm interrupt within this long of the last switch (a crisis may) */
+  lowpower_nights:2,          /* low power = less in store than this many nights need */
+  lowpower_enter:5.0,
+  lowpower_exit:15.0,
+  night_from:0.82,            /* fraction of the day from which it counts as night */
+  work_hold:50.0,             /* work counts this long after the last job */
+  /* mix */
+  bus_db:-5.0,                /* the music bus, under the sound effects */
+  default_volume:0.8,
+  pause_db:-9.0,              /* paused: this much lower ... */
+  pause_lowpass_hz:900,       /* ... behind a soft low-pass */
+  pause_fade:0.8,
+  duck_db:3.0,                /* gunshots, explosions, thunder, heartbeat */
+  duck_attack:0.04,
+  duck_hold:0.3,
+  duck_release:1.0,
+  hide_fade:0.5,              /* page hidden (tab in background, phone locked): fade, then pause */
+  show_fade:1.0,
+  tick:0.1,                   /* the engine looks at the players this often */
+  preload_after:3.0           /* start preloading the next track this long into the current one */
+};
+
+/* The director: decides what plays. It never touches audio. The engine
+   calls tick() with the real position of the current track and carries
+   out the commands it returns: {op:'play',track,fade} (crossfade every
+   sounding track into this one, from its beginning) or {op:'fade',fade}
+   (fade everything out). rand() is the music's own random source. */
+function musicDirector(T,rand){
+  rand=rand||Math.random;
+  var SH=T.shelter_tracks;
+  var D={scene:'',stopped:false,paused:false,waiting:true,deferred:false,cur:null,intr:'',
+    history:[],played:[],lastShelter:'',openingI:0,sortieFirst:'',
+    sim:{crisis:false,storm:false,night:false},
+    on:{crisis:false,storm:false,lowpower:false,work:false},tmr:{crisis:0,storm:0,lowpower:0,work:0},
+    cond:null,awaitReport:false,awaitT:0,returned:false,since:999,nextR:rand(),out:[]};
+  function play(tr,fade,mark){
+    D.cur={track:tr,ending:false,t:0};D.since=0;
+    if(D.scene==='shelter'&&SH.indexOf(tr)>=0){D.lastShelter=tr;D.played.push(tr+(mark||(D.intr?'*':'')));if(D.played.length>32)D.played=D.played.slice(-32);}
+    D.out.push({op:'play',track:tr,fade:fade});
+  }
+  function fadeAll(fade){D.cur=null;D.out.push({op:'fade',fade:fade});}
+  function resetConds(){D.intr='';D.awaitReport=false;for(var k in D.on){D.on[k]=false;D.tmr[k]=0;}D.cond=null;}
+  function start(was,fade){
+    if(D.scene==='menu'){
+      if(D.cur&&D.cur.track===T.menu_track&&was==='menu')return;
+      play(T.menu_track,fade>0?fade:(was===''?T.menu_start_fade:T.game_to_menu_fade));
+    }else if(D.scene==='sortie'){
+      play(sortieFirst(),fade>0?fade:T.sortie_fade);
+    }else if(D.scene==='shelter'){
+      if(was===''||was==='menu'||was==='shelter'){
+        /* first entry of a session (new game, a load, a new game after game over): the opening order, Lamplight first */
+        D.history=[];D.played=[];D.lastShelter='';D.openingI=1;D.returned=false;
+        D.history.push(T.shelter_first);play(T.shelter_first,fade>0?fade:T.menu_to_game_fade);
+      }else{
+        /* back from a sortie: the sortie track fades now; the shelter pick waits for the first report */
+        fadeAll(fade>0?fade:T.sortie_fade);D.returned=true;D.awaitReport=true;D.awaitT=0;
+      }
+    }
+  }
+  /* --- the sortie playlist */
+  function sortieFirst(){
+    var pl=T.sortie_playlist,w=[],tot=0,i;
+    for(i=0;i<pl.length;i++){var x=pl[i]===D.sortieFirst?T.sortie_repeat_first_weight:1;w.push(x);tot+=x;}
+    var r=rand()*tot,pick=pl[0];
+    for(i=0;i<pl.length;i++){r-=w[i];if(r<=0){pick=pl[i];break;}}
+    D.sortieFirst=pick;return pick;
+  }
+  function sortieAfter(tr){var pl=T.sortie_playlist,i=pl.indexOf(tr);return i>=0?pl[(i+1)%pl.length]:pl[0];}
+  /* --- the shelter rotation. peek = what would come next, without changing anything */
+  function shelterNext(peek){
+    if(D.on.crisis){if(!peek)D.intr='crisis';return T.crisis_track;}
+    if(D.on.storm){if(!peek)D.intr='storm';return T.storm_track;}
+    if(!peek)D.intr='';
+    return rotationPick(peek);
+  }
+  function rotationPick(peek){
+    var last=D.lastShelter,op=T.shelter_opening,i=D.openingI;
+    while(i<op.length){var o=op[i];i++;if(o!==last){if(!peek)D.openingI=i;return peek?o:record(o);}}
+    if(!peek)D.openingI=i;
+    var w=weights(last),win=T.shelter_window,due='',dueGap=-1;
+    /* the guarantee: a track missing from the last (window - 1) picks goes next, the longest missing first */
+    SH.forEach(function(tr){if(tr===last||!(w[tr]>0))return;var g=gap(tr);if(g>=win-1&&g>dueGap){due=tr;dueGap=g;}});
+    if(due)return peek?due:record(due);
+    var keys=Object.keys(w),tot=0,k;
+    for(k=0;k<keys.length;k++)tot+=w[keys[k]];
+    if(tot<=0){for(k=0;k<SH.length;k++)if(SH[k]!==last)return peek?SH[k]:record(SH[k]);}
+    /* the random number for this pick is drawn in advance, so a peek sees the same pick (preloading) */
+    var r=D.nextR*tot,pick=keys[keys.length-1];
+    for(k=0;k<keys.length;k++){r-=w[keys[k]];if(r<=0){pick=keys[k];break;}}
+    if(peek)return pick;
+    D.nextR=rand();return record(pick);
+  }
+  function gap(tr){var i=D.history.lastIndexOf(tr);return i<0?D.history.length:D.history.length-1-i;}
+  function record(tr){D.history.push(tr);if(D.history.length>64)D.history=D.history.slice(-64);D.returned=false;return tr;}
+  function bias(tab,tr){return tab&&tab[tr]!=null?tab[tr]:1;}
+  function weights(last){
+    var o={};
+    SH.forEach(function(tr){if(tr===last)return;
+      var w=T.shelter_share[tr]!=null?T.shelter_share[tr]:0.2;
+      if(last)w*=bias(T.shelter_next[last],tr);
+      if(D.on.lowpower)w*=bias(T.bias_night,tr);
+      if(D.on.work)w*=bias(T.bias_work,tr);
+      if(D.returned)w*=bias(T.bias_return,tr);
+      o[tr]=w;});
+    return o;
+  }
+  /* --- interrupts and their hysteresis */
+  function interrupts(){
+    var ct=T.crisis_track,st=T.storm_track;
+    if(D.on.crisis){
+      if(D.intr!=='crisis'){D.intr='crisis';if(D.cur.track!==ct)play(ct,T.crisis_fade);else D.played.push(ct+'*');}
+    }else if(D.on.storm&&D.intr===''&&D.since>=T.interrupt_guard){
+      D.intr='storm';if(D.cur.track!==st)play(st,T.storm_fade);
+    }
+  }
+  function flip(k,raw,enter,leave,dt){
+    if(raw===D.on[k]){D.tmr[k]=0;return;}
+    D.tmr[k]+=dt;if(D.tmr[k]>=(raw?enter:leave)){D.on[k]=raw;D.tmr[k]=0;}
+  }
+  function hysteresis(dt){
+    var c=D.cond||{};
+    flip('crisis',!!c.crisis||D.sim.crisis,T.crisis_enter,T.crisis_exit,dt);
+    flip('storm',!!c.storm||D.sim.storm,T.storm_enter,T.storm_exit,dt);
+    if(c.night||D.sim.night){D.on.lowpower=true;D.tmr.lowpower=0;}
+    else flip('lowpower',!!c.low_power,T.lowpower_enter,T.lowpower_exit,dt);
+    flip('work',!!c.work,0,T.work_hold,dt);
+  }
+  function xfade(){return D.scene==='menu'?T.menu_xfade:D.scene==='sortie'?T.sortie_xfade:T.shelter_xfade;}
+  function onEnd(fade){
+    if(D.scene==='menu')play(T.menu_track,fade);
+    else if(D.scene==='sortie')play(sortieAfter(D.cur.track),fade);
+    else if(D.scene==='shelter')play(shelterNext(),fade);
+  }
+  function drain(){var o=D.out;D.out=[];return o;}
+
+  /* ---------------- what the game tells the director */
+  /* the screen the player is on: 'menu' | 'shelter' | 'sortie'. fresh = a new sortie */
+  D.setScene=function(s,fresh){
+    if(s===D.scene&&!D.stopped&&!fresh)return drain();
+    var was=D.scene;D.scene=s;D.stopped=false;D.paused=false;resetConds();
+    if(D.waiting){D.deferred=true;return drain();}
+    start(was,-1);return drain();
+  };
+  /* raw shelter conditions, about once a second: {crisis, storm, night, low_power, work} */
+  D.report=function(c){
+    var first=!D.cond;D.cond=c;
+    if(D.scene!=='shelter')return drain();
+    if(first){D.on.lowpower=!!(c.low_power||c.night||D.sim.night);D.on.work=!!c.work;}
+    if(D.awaitReport&&!D.waiting){D.awaitReport=false;play(shelterNext(),T.sortie_fade);}
+    return drain();
+  };
+  /* lost sortie, game over. scene: the scene the next setScene comes from */
+  D.stop=function(fade,scene){
+    D.stopped=true;D.awaitReport=false;D.intr='';if(scene)D.scene=scene;
+    fadeAll(fade>0?fade:T.stop_fade);return drain();
+  };
+  D.setPaused=function(p){D.paused=!!p;};
+  /* the first tap or key: the music of the current screen fades in */
+  D.firstInput=function(){
+    if(!D.waiting)return drain();
+    D.waiting=false;
+    if(D.deferred){D.deferred=false;start(D.scene==='menu'?'':'menu',T.first_input_fade);}
+    return drain();
+  };
+  /* one step of dt real seconds. pos/len: where the current track is (seconds; len NaN while
+     unknown); ended: the current track's player has stopped at its end (or failed) */
+  D.tick=function(dt,pos,len,ended){
+    var c0=D.cur;
+    D.since+=dt;if(D.cur)D.cur.t+=dt;
+    if(D.scene==='shelter'&&!D.stopped){
+      hysteresis(dt);
+      if(D.awaitReport){D.awaitT+=dt;if(D.awaitT>=T.report_wait&&!D.waiting){D.awaitReport=false;play(shelterNext(),T.sortie_fade);}}
+      else if(D.cur)interrupts();
+    }
+    if(D.cur&&D.cur===c0&&!D.stopped&&!D.waiting&&!D.cur.ending){
+      var xf=xfade();
+      if(ended||(len>0&&isFinite(len)&&pos>=len-xf)){D.cur.ending=true;onEnd(ended?1:xf);}
+    }
+    return drain();
+  };
+  /* the track that will most likely follow the current one (the engine preloads it) */
+  D.peekNext=function(){
+    if(!D.cur||D.stopped||D.waiting)return '';
+    if(D.scene==='menu')return T.menu_track;
+    if(D.scene==='sortie')return sortieAfter(D.cur.track);
+    if(D.scene==='shelter'&&!D.awaitReport)return shelterNext(true);
+    return '';
+  };
+  /* what is playing, in a word: menu / sortie / shelter / crisis / storm / silent */
+  D.state=function(){if(D.stopped||!D.cur)return 'silent';if(D.scene==='shelter'&&D.intr)return D.intr;return D.scene;};
+  /* debug: play a track now (2 s crossfade); afterwards the scene's own rules carry on */
+  D.force=function(tr){if(T.tracks[tr])play(tr,2,'!');return drain();};
+  /* debug: the next shelter track now, with the normal crossfade */
+  D.nextShelter=function(){if(D.scene==='shelter'&&!D.stopped)play(shelterNext(),T.shelter_xfade);return drain();};
+  /* debug and tests: the current track was moved (jump to its end) */
+  D.rewound=function(){if(D.cur)D.cur.ending=false;};
+  D.preview=function(){
+    if(!D.cur)return '-';
+    if(D.scene!=='shelter')return D.peekNext()||'-';
+    if(D.on.crisis)return T.crisis_track+' (crisis)';
+    if(D.on.storm)return T.storm_track+' (storm)';
+    if(D.openingI<T.shelter_opening.length)return shelterNext(true)+' (opening '+(D.openingI+1)+'/'+T.shelter_opening.length+')';
+    var w=weights(D.lastShelter),tot=0,ks=Object.keys(w);ks.forEach(function(k){tot+=w[k];});
+    ks.sort(function(a,b){return w[b]-w[a];});
+    return shelterNext(true)+' · odds '+ks.slice(0,3).map(function(k){return k+' '+Math.round(100*w[k]/Math.max(tot,0.001))+'%';}).join(', ');
+  };
+  return D;
+}
+/* MUSIC-DIRECTOR-END */
+
+/* ---------------- Part 2: the engine ----------------
+   Two <audio> elements stream the files (nothing is decoded into memory),
+   each through createMediaElementSource and its own gain into the music
+   bus, which goes straight to the speakers: the music skips the sound
+   effects' EQ and compressor, which would dull it and pump with every shot.
+   Bus: voices -> bus gain (volume, pause, duck) -> low-pass (pause) ->
+   hide gain (page hidden) -> output. Each voice's level moves linearly and
+   its gain is sin(level x PI/2), so two voices crossing keep equal power.
+   The end of a track is read from the element's currentTime and duration
+   every 100 ms of real time; the game's clock, pause and speed cannot move it. */
+var MusicManager=(function(){
+  var T=MUSIC_T;
+  /* the music's own random source (never the game's) */
+  var rs=(Date.now()^Math.floor(performance.now()*1000))>>>0;
+  try{var ra=new Uint32Array(1);crypto.getRandomValues(ra);rs=ra[0];}catch(e){}
+  function mrand(){rs=(rs+0x6D2B79F5)>>>0;var t=rs;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return ((t^t>>>14)>>>0)/4294967296;}
+  var dir=musicDirector(T,mrand);
+  var M={dir:dir,vol:T.default_volume,on:true};
+  try{var st=JSON.parse(localStorage.getItem('atlas_music')||'null');if(st){if(typeof st.vol==='number')M.vol=Math.max(0,Math.min(1,st.vol));if(typeof st.on==='boolean')M.on=st.on;}}catch(e){}
+  var slots=[],voices=[],cur=null,graph=null,webaudio=false,unlocked=false,hidden=!!document.hidden;
+  var pauseAmt=0,duck=0,duckTo=0,duckHold=0,lastT=performance.now(),repT=0;
+  var lastX=null,lastMode=null;
+  var SILENT_SRC=typeof SILENT==='string'?SILENT:'';
+  function dbg(db){return Math.pow(10,db/20);}
+  function toward(a,b,s){return a<b?Math.min(b,a+s):Math.max(b,a-s);}
+  function url(tr){return T.dir+T.tracks[tr].file;}
+
+  /* --- the graph: built once, on the first tap, on the game's AudioContext */
+  function build(){
+    if(slots.length)return;
+    var c=AU.ctx;
+    /* opened straight from disk (file://) the browser refuses to let Web Audio read the files:
+       then the elements play on their own, with their volume set directly and no pause filter */
+    webaudio=!!(c&&c.createMediaElementSource&&location.protocol!=='file:');
+    if(webaudio){try{
+      graph={bus:c.createGain(),lp:c.createBiquadFilter(),hide:c.createGain()};
+      graph.lp.type='lowpass';graph.lp.frequency.value=20000;graph.lp.Q.value=0.5;
+      graph.bus.gain.value=0;graph.hide.gain.value=hidden?0:1;
+      graph.bus.connect(graph.lp);graph.lp.connect(graph.hide);graph.hide.connect(c.destination);
+    }catch(e){webaudio=false;graph=null;}}
+    for(var i=0;i<2;i++){
+      var el=new Audio();el.preload='auto';el.setAttribute('playsinline','');el.setAttribute('webkit-playsinline','');
+      var s={el:el,track:'',voice:null,pending:false,g:null};
+      if(webaudio){try{var src=c.createMediaElementSource(el);s.g=c.createGain();s.g.gain.value=0;src.connect(s.g);s.g.connect(graph.bus);}catch(e){webaudio=false;}}
+      if(!webaudio)el.volume=0;
+      (function(s){
+        s.el.addEventListener('playing',function(){if(s.voice)s.voice.ready=true;});
+        s.el.addEventListener('error',function(){if(s.voice)s.voice.failed=true;s.track='';});
+      })(s);
+      slots.push(s);
+    }
+  }
+  function busGain(){
+    if(!AU.on||!M.on||M.vol<=0.001)return 0;
+    return dbg(T.bus_db)*M.vol*dbg(T.pause_db*pauseAmt)*dbg(-duck);
+  }
+  function applyGains(){
+    var b=busGain();
+    if(webaudio&&graph){var t=AU.ctx.currentTime;
+      graph.bus.gain.setTargetAtTime(b,t,0.03);
+      graph.lp.frequency.setTargetAtTime(20000*Math.pow(T.pause_lowpass_hz/20000,pauseAmt),t,0.05);}
+    voices.forEach(function(v){
+      var g=Math.sin(v.level*Math.PI/2)*dbg(T.tracks[v.track].db||0);
+      if(webaudio&&v.slot.g)v.slot.g.gain.setTargetAtTime(g,AU.ctx.currentTime,0.03);
+      else{try{v.slot.el.volume=Math.max(0,Math.min(1,g*b*(hidden?0:1)));}catch(e){}}
+    });
+  }
+  function tryPlay(el){
+    if(!unlocked||hidden)return;
+    try{var p=el.play();if(p&&p.catch)p.catch(function(err){if(err&&err.name==='NotAllowedError')unlocked=false;});}catch(e){}
+  }
+  function startVoice(v){
+    var s=v.slot,el=s.el;s.voice=v;s.pending=false;
+    if(webaudio&&s.g){s.g.gain.cancelScheduledValues(AU.ctx.currentTime);s.g.gain.setValueAtTime(0,AU.ctx.currentTime);}
+    if(s.track!==v.track||el.error){s.track=v.track;el.src=url(v.track);}
+    try{el.currentTime=0;}catch(e){}
+    tryPlay(el);
+  }
+  function release(v){
+    var s=v.slot;if(s.voice!==v)return;
+    s.voice=null;try{s.el.pause();}catch(e){}
+    if(webaudio&&s.g)s.g.gain.setValueAtTime(0,AU.ctx.currentTime);
+  }
+  function freeSlot(tr){
+    var free=slots.filter(function(s){return !s.voice&&!s.pending;});
+    return free.filter(function(s){return s.track===tr;})[0]||free[0]||null;
+  }
+  /* carry out the director's commands */
+  function exec(cmds){
+    if(!cmds||!cmds.length)return;
+    build();
+    cmds.forEach(function(c){
+      var rate=1/Math.max(0.05,c.fade);
+      voices.forEach(function(v){v.to=0;v.rate=rate;});
+      if(c.op==='fade'){cur=null;return;}
+      var v={track:c.track,slot:null,level:0,to:1,rate:rate,ready:false,failed:false,age:0};
+      var s=freeSlot(c.track);
+      if(s){v.slot=s;voices.push(v);cur=v;startVoice(v);return;}
+      /* both players busy (a switch during a crossfade): the quieter one gives way in 90 ms */
+      var old=voices.slice().sort(function(a,b){return a.level-b.level;})[0];
+      s=old.slot;voices.splice(voices.indexOf(old),1);
+      if(webaudio&&s.g)s.g.gain.setTargetAtTime(0,AU.ctx.currentTime,0.02);else{try{s.el.volume=0;}catch(e){}}
+      s.voice=null;s.pending=true;v.slot=s;voices.push(v);cur=v;
+      setTimeout(function(){if(s.pending&&voices.indexOf(v)>=0)startVoice(v);else s.pending=false;},90);
+    });
+  }
+  /* the idle player loads what will most likely come next */
+  function preload(){
+    if(!cur||cur.age<T.preload_after||!unlocked)return;
+    var nx=dir.peekNext();if(!nx||!T.tracks[nx])return;
+    var free=slots.filter(function(s){return !s.voice&&!s.pending;});
+    if(!free.length||free.some(function(s){return s.track===nx;}))return;
+    var s=free[0];s.track=nx;try{s.el.src=url(nx);s.el.load();}catch(e){}
+  }
+
+  /* --- what is going on in the game */
+  var WORK_JOBS=['tend','water','gen','smelt','listen','craft','treat','mist','proj'];
+  /* the PROBLEMS conditions that are hunger or thirst, power failure, cold or radiation (nerves alone do not count) */
+  function crisisNow(){
+    var W=wellS();
+    if(S.res.power<1||W.dark)return true;
+    if(S.res.food<1||S.res.water<1)return true;
+    return present().some(function(id){if(isBot(id))return false;var w=wOf(id);return !!(w.h||w.t)||(S.ch[id].rad||0)>=60;});
+  }
+  function workNow(){
+    var busy=IDS.some(function(id){var c=S.ch[id];if(!c||c.alive===false||c.away||c.out||(isBot(id)&&c.off))return false;return WORK_JOBS.indexOf(taskKey(c.task||'rest'))>=0;});
+    return busy||(S.rooms||[]).some(function(r){return r.bt>0;});
+  }
+  function conditions(){
+    var pw=S.res.power||0;
+    return {crisis:crisisNow(),storm:((S.wx&&S.wx.storm)||0)>=T.storm_level,
+      night:MODE==='dawn'||(S.clock||0)/DAY_LEN>=T.night_from,
+      low_power:pw>=1&&pw<nightNeed()*T.lowpower_nights,work:workNow()};
+  }
+  function report(){try{if(S&&!S.over)exec(dir.report(conditions()));}catch(e){}}
+  /* the screen the player is on */
+  function observe(){
+    var m=MODE;
+    if(m==='title')exec(dir.setScene('menu'));
+    else if(m==='exp'){if(X&&X!==lastX&&!X.over){lastX=X;exec(dir.setScene('sortie',true));}}
+    else if(m==='day'||m==='dawn'){var fromOther=dir.scene!=='shelter'||dir.stopped;exec(dir.setScene('shelter'));if(fromOther){report();repT=0;}}
+    else if(m==='over'){if(!dir.stopped)exec(dir.stop(T.stop_fade,'shelter'));}
+    lastMode=m;
+  }
+
+  /* --- every 100 ms of real time */
+  function tick(){
+    var t=performance.now(),dt=Math.min(0.25,Math.max(0,(t-lastT)/1000));lastT=t;
+    if(hidden)return;
+    try{observe();}catch(e){}
+    if(dir.scene==='shelter'){repT-=dt;if(repT<=0){repT=1;report();}}
+    var p=!!(MODE==='exp'&&X&&X.paused&&!X.over);dir.setPaused(p);
+    pauseAmt=toward(pauseAmt,p?1:0,dt/Math.max(0.05,T.pause_fade));
+    if(duckTo>0){duck=toward(duck,duckTo,duckTo/Math.max(0.005,T.duck_attack)*dt);if(duck>=duckTo-0.001){duckHold-=dt;if(duckHold<=0)duckTo=0;}}
+    else duck=toward(duck,0,T.duck_db/Math.max(0.05,T.duck_release)*dt);
+    voices=voices.filter(function(v){
+      v.age+=dt;
+      if(v.to<v.level||v.ready||v.failed)v.level=toward(v.level,v.to,v.rate*dt);
+      var el=v.slot.el,over=el.ended||(v.failed&&v.age>2);
+      if((v.level<=0&&v.to<=0)||(over&&v!==cur)){release(v);return false;}
+      return true;
+    });
+    var pos=0,len=NaN,ended=false;
+    if(cur){var el=cur.slot.el;pos=el.currentTime||0;len=el.duration;ended=el.ended||(cur.failed&&cur.age>2);}
+    exec(dir.tick(dt,pos,len,ended));
+    preload();
+    applyGains();
+  }
+  setInterval(tick,T.tick*1000);
+
+  /* --- the first tap or key (browsers and phones only play sound after one) */
+  function gesture(){
+    try{auInit();}catch(e){}
+    build();
+    /* the old generative pad and notes are retired: the soundtrack is the music now */
+    try{if(AU.pad&&!AU._padOff){AU._padOff=1;AU.pad.disconnect();}}catch(e){}
+    if(!unlocked){
+      unlocked=true;
+      /* iPhone: every player has to be started once inside a tap before it may play later on its own */
+      slots.forEach(function(s){if(s.voice||s.pending)return;var el=s.el;if(!s.track&&SILENT_SRC){el.src=SILENT_SRC;}
+        try{var pr=el.play();if(pr&&pr.then)pr.then(function(){if(!s.voice)el.pause();}).catch(function(){});}catch(e){}});
+      exec(dir.firstInput());
+    }
+    /* anything that should sound but was refused earlier gets another go */
+    voices.forEach(function(v){if(v.slot.el.paused&&!v.slot.pending&&v.to>0)tryPlay(v.slot.el);});
+    applyGains();
+  }
+  ['pointerup','touchend','click','keydown'].forEach(function(ev){document.addEventListener(ev,gesture,true);});
+
+  /* --- page hidden (tab in background, phone locked): fade out and pause; back: carry on */
+  document.addEventListener('visibilitychange',function(){
+    if(document.hidden){
+      hidden=true;
+      if(webaudio&&graph)graph.hide.gain.setTargetAtTime(0,AU.ctx.currentTime,T.hide_fade/4);
+      setTimeout(function(){if(hidden)slots.forEach(function(s){try{s.el.pause();}catch(e){}});},T.hide_fade*1000+100);
+    }else{
+      hidden=false;lastT=performance.now();
+      if(webaudio&&graph){graph.hide.gain.cancelScheduledValues(AU.ctx.currentTime);graph.hide.gain.setTargetAtTime(1,AU.ctx.currentTime,T.show_fade/4);}
+      voices.forEach(function(v){if(!v.slot.pending)tryPlay(v.slot.el);});
+      applyGains();
+    }
+  });
+
+  /* --- what the rest of the game calls */
+  M.duck=function(db){duckHold=T.duck_hold;duckTo=Math.max(duckTo,db>0?db:T.duck_db);duck=duckTo;applyGains();};
+  M.lost=function(){exec(dir.stop(T.stop_fade));};
+  M.setVolume=function(v){M.vol=Math.max(0,Math.min(1,v));M.save();applyGains();};
+  M.setOn=function(on){M.on=!!on;M.save();applyGains();};
+  M.save=function(){try{localStorage.setItem('atlas_music',JSON.stringify({on:M.on,vol:M.vol}));}catch(e){}};
+  M.applyGains=applyGains;
+  /* debug */
+  M.force=function(tr){exec(dir.force(tr));};
+  M.next=function(){exec(dir.nextShelter());};
+  M.jumpEnd=function(secs){if(!cur)return;var el=cur.slot.el;if(!(el.duration>0))return;try{el.currentTime=Math.max(0,el.duration-(secs||15));}catch(e){}dir.rewound();};
+  M.info=function(){
+    var c=cur&&cur.slot.el;
+    return {state:dir.state(),scene:dir.scene,track:cur?cur.track:'',pos:c?c.currentTime:0,len:c?c.duration:NaN,next:dir.preview(),
+      voices:voices.map(function(v){return {track:v.track,level:v.level,to:v.to,ready:v.ready,failed:v.failed};}),
+      slots:slots.map(function(s){return {track:s.track,busy:!!s.voice,paused:s.el.paused,ready:s.el.readyState};}),
+      played:dir.played.slice(-8),intr:dir.intr,on:dir.on,tmr:dir.tmr,sim:dir.sim,since:dir.since,
+      duck:duck,pause:pauseAmt,paused:dir.paused,vol:M.vol,musicOn:M.on,soundOn:AU.on,unlocked:unlocked,webaudio:webaudio,waiting:dir.waiting,stopped:dir.stopped,hidden:hidden};
+  };
+  return M;
+})();
+
+/* gunshots, explosions, thunder and the low-HP heartbeat dip the music a little */
+['shot','boom','burst','thunder','heartbeat'].forEach(function(k){var f=sfx[k];if(typeof f!=='function')return;
+  sfx[k]=function(a){try{if(ok()&&!(k==='shot'&&a==='empty'))MusicManager.duck();}catch(e){}return f.apply(this,arguments);};});
+/* the generative score of earlier builds is retired (the soundtrack replaces it) */
+auMusic=function(){};
+/* a sortie that ends with the whole squad down fades the music out */
+var endSortieM=endSortie;endSortie=function(why){var x=X,r=endSortieM.apply(this,arguments);
+  try{if(why==='dead'&&x&&x.over)MusicManager.lost();}catch(e){}return r;};
+
+/* ---------------- SOUND & MUSIC options ---------------- */
+function openSoundMenu(){
+  var title=MODE==='title';
+  function pct(){return Math.round(MusicManager.vol*100)+'%';}
+  var h='<div class="sub">OPTIONS</div><h2>Sound &amp; music</h2>'+
+    '<label class="flbl">SOUND</label><div class="swr"><button id="soSnd" class="'+(AU.on?'on':'')+'">'+(AU.on?'Sound: on':'Sound: off')+'</button></div>'+
+    '<label class="flbl">MUSIC</label><div class="swr"><button id="soMus" class="'+(MusicManager.on?'on':'')+'">'+(MusicManager.on?'Music: on':'Music: off')+'</button></div>'+
+    '<label class="flbl">MUSIC VOLUME · <b id="soPct">'+pct()+'</b></label>'+
+    '<input type="range" id="soVol" min="0" max="100" step="5" value="'+Math.round(MusicManager.vol*100)+'" style="width:100%;accent-color:#fbbf24">'+
+    '<small class="fhint">The music sits a little under the sound effects. Sound off silences everything.</small>';
+  showModal(h,[{label:title?'BACK':'CLOSE',cls:'go',fn:function(){if(title&&MODE==='title')menuMain();else hideModal();}}]);
+  $('#soSnd').addEventListener('click',function(){toggleSound();openSoundMenu();});
+  $('#soMus').addEventListener('click',function(){MusicManager.setOn(!MusicManager.on);sfx.ui('tap');openSoundMenu();});
+  var r=$('#soVol');r.addEventListener('input',function(){MusicManager.setVolume(r.value/100);$('#soPct').textContent=pct();if(r.value>0&&!MusicManager.on)MusicManager.setOn(true);});
+}
+
+/* ---------------- music debug panel: open the game with ?musicdebug=1 ---------------- */
+(function(){
+  var on=false;try{on=/[?&]musicdebug=1\b/.test(location.search);}catch(e){}
+  if(!on)return;
+  window.__music=MusicManager;
+  var d=document.createElement('div');d.id='musicDebug';
+  d.style.cssText='position:fixed;left:6px;top:6px;z-index:9999;background:rgba(0,0,0,.82);color:#d1fae5;font:11px/1.35 ui-monospace,Menlo,monospace;padding:8px 10px;border-radius:8px;max-width:min(96vw,460px);max-height:45vh;overflow:auto;pointer-events:auto;white-space:pre-wrap';
+  /* tap the text to fold the panel to one line */
+  var txt=document.createElement('div'),small=false;txt.style.cursor='pointer';d.appendChild(txt);
+  txt.addEventListener('click',function(ev){ev.stopPropagation();small=!small;bar.style.display=small?'none':'flex';});
+  var bar=document.createElement('div');bar.style.cssText='display:flex;flex-wrap:wrap;gap:4px;margin-top:6px';d.appendChild(bar);
+  var TR=['ashen_road','unbroken','lamplight','low_power','relay_hum','overhead','brownout'];
+  var B=[['1 ASHEN',function(){MusicManager.force(TR[0]);}],['2 UNBROKEN',function(){MusicManager.force(TR[1]);}],['3 LAMP',function(){MusicManager.force(TR[2]);}],
+    ['4 LOWPWR',function(){MusicManager.force(TR[3]);}],['5 RELAY',function(){MusicManager.force(TR[4]);}],['6 OVERHEAD',function(){MusicManager.force(TR[5]);}],
+    ['7 BROWNOUT',function(){MusicManager.force(TR[6]);}],['N NEXT',function(){MusicManager.next();}],['E LAST 15s',function(){MusicManager.jumpEnd(15);}],
+    ['S STORM',function(){var s=MusicManager.dir.sim;s.storm=!s.storm;}],['C CRISIS',function(){var s=MusicManager.dir.sim;s.crisis=!s.crisis;}],
+    ['L NIGHT',function(){var s=MusicManager.dir.sim;s.night=!s.night;}],['0 SIMS OFF',function(){var s=MusicManager.dir.sim;s.storm=s.crisis=s.night=false;}],
+    ['H HIDE',function(){d.style.display='none';}]];
+  var keys={};
+  B.forEach(function(b){var el=document.createElement('button');el.textContent=b[0];el.style.cssText='font:inherit;font-size:10px;padding:3px 6px;border-radius:5px;border:1px solid #475569;background:#1e293b;color:#e2e8f0';
+    el.addEventListener('click',function(ev){ev.stopPropagation();b[1]();});el.addEventListener('pointerdown',function(ev){ev.stopPropagation();});bar.appendChild(el);keys[b[0].split(' ')[0].toLowerCase()]=b[1];});
+  /* keys: Alt + 1..7, N, E, S, C, L, 0, H (M shows the panel again) */
+  document.addEventListener('keydown',function(e){if(!e.altKey)return;var k=(e.code||'').replace(/^Digit|^Key/,'').toLowerCase();
+    if(k==='m'){d.style.display='';e.preventDefault();return;}if(keys[k]){keys[k]();e.preventDefault();}},true);
+  function mmss(s){if(!(s>=0)||!isFinite(s))return '-:--';return Math.floor(s/60)+':'+('0'+Math.floor(s%60)).slice(-2);}
+  setInterval(function(){try{if(d.style.display==='none')return;var i=MusicManager.info(),L=[];
+    L.push('MUSIC DEBUG · Alt+1..7 force · N next · E last 15 s · S storm · C crisis · L night · 0 sims off · H hide / M show');
+    L.push('scene '+(i.scene||'-')+' · state '+i.state.toUpperCase()+(i.waiting?' · waiting for first tap':'')+(i.stopped?' · stopped':'')+(i.webaudio?'':' · direct (no Web Audio)'));
+    L.push('now:  '+(i.track?i.track+'  '+mmss(i.pos)+' / '+mmss(i.len):'(silent)'));
+    L.push('next: '+i.next);
+    i.voices.forEach(function(v){L.push('  '+(v.track+'          ').slice(0,10)+' level '+Math.round(v.level*100)+'% '+(v.to>0.5?'in':'out')+(v.ready?'':' (loading)')+(v.failed?' FAILED':''));});
+    L.push('players: '+i.slots.map(function(s){return (s.track||'-')+(s.busy?'':' (idle)');}).join(' | '));
+    if(i.scene==='shelter'){
+      L.push('interrupt: '+(i.intr?i.intr+(i.on[i.intr]?' (holding)':' (clear: plays to its end)'):'none')+' · since switch '+Math.round(i.since)+' s');
+      L.push('last picks: '+(i.played.join(' ')||'-'));
+      ['crisis','storm','lowpower','work'].forEach(function(k){L.push('  '+(k+'        ').slice(0,8)+' '+(i.on[k]?'ON ':'off')+(i.tmr[k]>0?' · changing in '+Math.round(i.tmr[k])+' s':''));});
+      L.push('sim: crisis '+i.sim.crisis+' · storm '+i.sim.storm+' · night '+i.sim.night);
+    }
+    L.push('duck -'+i.duck.toFixed(1)+' dB · pause '+Math.round(i.pause*100)+'% · music '+Math.round(i.vol*100)+'%'+(i.musicOn?'':' MUTED')+(i.soundOn?'':' · SOUND OFF'));
+    txt.textContent=small?'♪ '+(i.track||'silent')+' '+mmss(i.pos)+'/'+mmss(i.len)+' · '+i.state+' (tap to open)':L.join('\n');}catch(e){txt.textContent='music debug: '+e;}},100);
+  function add(){document.body.appendChild(d);}if(document.body)add();else document.addEventListener('DOMContentLoaded',add);
+})();
 })();</script></body></html>
